@@ -17,10 +17,12 @@ pkgconfig_DATA = src/libzgtask.pc
 
 include_HEADERS = \
     include/zgtask.h \
+    include/zgtask_task.h \
     include/zgtask_tree.h \
     include/zgtask_library.h
 
 src_libzgtask_la_SOURCES = \
+    src/zgtask_task.c \
     src/zgtask_tree.c \
     src/platform.h
 

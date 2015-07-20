@@ -1,5 +1,5 @@
 /*  =========================================================================
-    zgtask_tree - Tree object for zgtask
+    zgtask_task - Task infozgtask
 
     Copyright (c) the Contributors as noted in the AUTHORS file.       
     This file is part of CZMQ, the high-level C binding for 0MQ:       
@@ -13,7 +13,7 @@
 
 /*
 @header
-    zgtask_tree - Tree object for zgtask
+    zgtask_task - Task infozgtask
 @discuss
 @end
 */
@@ -21,45 +21,39 @@
 #include "../include/zgtask.h"
 
 //  Structure of our class
+#define MAX_LENGTH 255
 
-struct _zgtask_tree_t {
-	zgtask_task_t *task;
-	zgtask_tree_t *firstchild;
-    zgtask_tree_t *nextsibling;
+struct _zgtask_task_t {
+	char command[MAX_LENGTH];
+	int required_time;
 };
 
 
 //  --------------------------------------------------------------------------
-//  Create a new zgtask_tree.
+//  Create a new zgtask_task.
 
-zgtask_tree_t *
-zgtask_tree_new ()
+zgtask_task_t *
+zgtask_task_new ()
 {
-    zgtask_tree_t *self = (zgtask_tree_t *) zmalloc (sizeof (zgtask_tree_t));
+    zgtask_task_t *self = (zgtask_task_t *) zmalloc (sizeof (zgtask_task_t));
     assert (self);
 
     //  TODO: Initialize properties
-    self->task = zgtask_task_new();
-    self->firstchild = 0;
-    self->nextsibling = 0;
 
     return self;
 }
 
 //  --------------------------------------------------------------------------
-//  Destroy the zgtask_tree.
+//  Destroy the zgtask_task.
 
 void
-zgtask_tree_destroy (zgtask_tree_t **self_p)
+zgtask_task_destroy (zgtask_task_t **self_p)
 {
     assert (self_p);
     if (*self_p) {
-        zgtask_tree_t *self = *self_p;
+        zgtask_task_t *self = *self_p;
 
         //  TODO: Free class properties
-        zgtask_task_destroy(&self->task);
-        zgtask_tree_destroy(&self->firstchild);
-        zgtask_tree_destroy(&self->nextsibling);
 
         //  Free object itself
         free (self);
@@ -69,13 +63,12 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
 
 
 //  --------------------------------------------------------------------------
-//  Print properties of the zgtask_tree object.
+//  Print properties of the zgtask_task object.
 
 void
-zgtask_tree_print (zgtask_tree_t *self)
+zgtask_task_print (zgtask_task_t *self)
 {
     assert (self);
-    zgtask_task_print(self->task);
 }
 
 
@@ -83,15 +76,15 @@ zgtask_tree_print (zgtask_tree_t *self)
 //  Self test of this class.
 
 void
-zgtask_tree_test (bool verbose)
+zgtask_task_test (bool verbose)
 {
-    printf (" * zgtask_tree: ");
+    printf (" * zgtask_task: ");
 
     //  @selftest
     //  Simple create/destroy test
-    zgtask_tree_t *self = zgtask_tree_new ();
+    zgtask_task_t *self = zgtask_task_new ();
     assert (self);
-    zgtask_tree_destroy (&self);
+    zgtask_task_destroy (&self);
     //  @end
 
     printf ("OK\n");

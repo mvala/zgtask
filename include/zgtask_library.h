@@ -48,11 +48,14 @@
 #endif
 
 //  Opaque class structures to allow forward references
+typedef struct _zgtask_task_t zgtask_task_t;
+#define ZGTASK_TASK_T_DEFINED
 typedef struct _zgtask_tree_t zgtask_tree_t;
 #define ZGTASK_TREE_T_DEFINED
 
 
 //  Public API classes
+#include "zgtask_task.h"
 #include "zgtask_tree.h"
 
 #endif

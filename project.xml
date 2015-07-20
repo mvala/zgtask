@@ -61,8 +61,8 @@
     <class name = "myclass">Public class description</class>
     <class name = "someother" private = "1">Private class description</class>
     -->
-
-    <class name = "zgtask_tree">Tree object for zgtask</class>
+	<class name = "zgtask_task">Task infozgtask</class>
+    <class name = "zgtask_tree">Tree object</class>
     <!--
         Actors, are build using the simple actor framework from czmq. If the
         actors class header or source file doesn't exist this will generate a
