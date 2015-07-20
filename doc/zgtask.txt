@@ -1,0 +1,25 @@
+Name(7)
+=======
+
+
+NAME
+----
+zgtask - zgtask is ZeroMQ and Git task manager
+
+
+SYNOPSIS
+--------
+----
+#include <zgtask.h>
+
+cc ['flags'] 'files' -lzgtask ['libraries']
+----
+
+
+DESCRIPTION
+-----------
+
+Classes
+~~~~~~~
+
+Something.

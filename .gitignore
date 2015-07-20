@@ -72,5 +72,3 @@ src/app/jni/output
 .cproject
 .settings
 
-# Travis
-.travis.yml
