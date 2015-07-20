@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "Merging root files ($1, $2, $3)"
+
+if [ ! -s "$2" ];then
+    echo "This is first file"
+else
+    hadd -f tmp.root $2 $3
+    #root tmp.root
+    mv tmp.root $2
+fi
+
+touch $2
+exit 0

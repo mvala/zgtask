@@ -1,0 +1,54 @@
+#!/bin/bash
+
+
+
+function ZgtCheck() {
+	
+	# checking if we have git installed
+	command -v git >/dev/null 2>&1 || { echo >&2 "I require git but it's not installed.  Aborting..."; exit 1; }
+	
+	# checking if current directory is git repo
+	[ -d ".git" ] || { echo ".git direcotry is missing!!!"; exit 2; }
+}
+
+function ZgtInitWkDir() {
+	rm -rf $ZGT_TMP_DIR 
+	[ -d $ZGT_TMP_DIR ] && { echo "Directory '$ZGT_TMP_DIR' exists!!! Remove it first !!!"; exit 2; } 
+	mkdir -p $ZGT_TMP_DIR || { echo "Cannot create '$ZGT_TMP_DIR' !!! Check permission !!!"; exit 3; } 	
+}
+
+function ZgtInfo() {
+	echo "ZGT_PROJECT_CLONE  : $ZGT_PROJECT_CLONE"
+	echo "ZGT_PROJECT_NAME   : $ZGT_PROJECT_NAME"
+	echo "ZGT_PROJECT_REMOTE : $ZGT_PROJECT_REMOTE"
+	echo "ZGT_PROJECT_BRANCH : $ZGT_PROJECT_BRANCH"
+	echo "ZGT_TMP_DIR        : $ZGT_TMP_DIR"
+}
+
+function ZgtEnvFile() {
+
+cat <<EOF > $ZGT_TMP_DIR/$ZGT_ENV
+#!/bin/bash
+export ZGT_PROJECT_CLONE=$ZGT_PROJECT_CLONE
+export ZGT_PROJECT_NAME=$ZGT_PROJECT_NAME
+export ZGT_PROJECT_REMOTE=$ZGT_PROJECT_REMOTE
+export ZGT_PROJECT_BRANCH=$ZGT_PROJECT_BRANCH
+EOF
+
+}
+
+ZgtCheck
+
+export ZGT_SCRIPT_DIR=$(dirname $(readlink -m ${0}))
+export ZGT_ENV="zgt-env.sh"
+export ZGT_PROJECT_CLONE=${ZGT_PROJECT_CLONE-"$(git config --get remote.origin.url)"}
+export ZGT_PROJECT_BRANCH=${ZGT_PROJECT_BRANCH-$(git rev-parse --abbrev-ref HEAD)}
+export ZGT_PROJECT_NAME=$(basename $(git rev-parse --show-toplevel))
+export ZGT_PROJECT_REMOTE=$(git config --get branch.${ZGT_PROJECT_BRANCH}.remote)
+export ZGT_TMP_DIR=${ZGT_TMP_DIR-/tmp/$USER/zgt}
+
+ZgtInitWkDir
+ZgtEnvFile
+ZgtInfo
+
+$ZGT_SCRIPT_DIR/zgt-submit

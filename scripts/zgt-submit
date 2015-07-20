@@ -1,0 +1,138 @@
+#!/bin/bash
+
+ZGT_JOB_ID=${1-1}
+ZGT_BRANCH=${ZGT_PROJECT_BRANCH}_${ZGT_JOB_ID}
+
+ZGT_LOG_DEBUG="zgt-debug.log"
+ZGT_LOG_JOB="zgtask.log"
+ZGT_LOG_RUN="zgtask-run-%d.log"
+
+cd $ZGT_TMP_DIR 
+[ -f "$ZGT_ENV" ] && source $ZGT_ENV || { echo "Setting file $ZGT_ENV was not found !!!"; exit 1; }
+
+function zgtGit() {
+	git "$@" >> $ZGT_LOG_DEBUG 2>&1
+	#git "$@" 2>&1 | tee -a $ZGT_LOG_DEBUG
+}
+
+function zgtRunScript() {
+	[ -f "$0" ] && "$@" 2>&1 | tee -a $ZGT_LOG
+}
+
+function zgtMsgInfo() {
+	echo "$*" 2>&1 | tee -a $ZGT_LOG
+}
+
+function zgtAddGitAttribute() {
+	echo "$*" >> .gitattributes
+}
+function zgtStart() {
+	
+	ZGT_LOG="zgtask.log"
+	
+	[ -d "$ZGT_PROJECT_NAME" ] && rm -rf $ZGT_PROJECT_NAME
+	git clone -b $ZGT_PROJECT_BRANCH --single-branch $ZGT_PROJECT_CLONE
+	#git clone -b $ZGT_PROJECT_BRANCH $ZGT_PROJECT_CLONE
+
+	cd $ZGT_PROJECT_NAME
+	zgtGit push origin :$ZGT_BRANCH
+	zgtGit checkout -b $ZGT_BRANCH
+	zgtGit push --set-upstream origin $ZGT_BRANCH
+	
+	zgtMsgInfo "JOB Statring at $(hostname) $(date)"
+	zgtGit add $ZGT_LOG
+	zgtGit commit $ZGT_LOG -m "JOB Statring at $(hostname) $(date)"
+	
+	# Setting up merge driver
+	git config --local merge.root-merge.name "Root merge"
+	git config --local merge.root-merge.driver "zgt-merge-root %O %A %B"
+	git config --local merge.root-merge.recursibe binary
+
+	# Fix .gitattributest to be ignored when repo doesn't have it already
+	echo ".gitattributes" >> .gitignore
+	echo "$ZGT_LOG_DEBUG" >> .gitignore
+
+	zgtAddGitAttribute "*.root -crlf -lf -diff merge=root-merge"
+	
+	# Running ztg-start
+	zgtRunScript zgtask/zgt-start.sh
+	
+	zgtMsgInfo "JOB Started $(date)"
+	zgtGit add $ZGT_LOG
+	zgtGit commit $ZGT_LOG -m "JOB Started $(date)"
+	zgtGit push origin $ZGT_BRANCH
+}
+
+function zgtRun() {
+	
+	zgtGit checkout $ZGT_BRANCH
+	zgtGit checkout -b ${ZGT_BRANCH}_$2
+	
+	ZGT_LOG=$(printf "$ZGT_LOG_RUN\n" $2)
+	zgtMsgInfo  "Run 'zgtask/zgt-run.sh $*' started : $(date)"
+	zgtGit add $ZGT_LOG
+	zgtGit commit $ZGT_LOG -m "Run $1 Started"
+		
+	# Running ztg-run
+	zgtRunScript zgtask/zgt-run.sh $1 $2
+	
+	zgtMsgInfo "rc=$?"
+	zgtGit add $ZGT_LOG
+	zgtGit commit $ZGT_LOG -m "Run $1 Done"
+	
+}
+
+function zgtEnd() {
+
+	ZGT_LOG="zgtask.log"
+	
+	zgtGit checkout $ZGT_BRANCH
+	
+	zgtMsgInfo "JOB Ending $(date)"
+	zgtGit add $ZGT_LOG_JOB
+	zgtGit commit $ZGT_LOG_JOB -m "JOB Ending $(date)"
+	#	zgtGit push origin $ZGT_BRANCH
+	
+	# Running ztg-end
+	zgtRunScript zgtask/zgt-end.sh
+	
+	zgtMsgInfo "JOB Merging $(date)"
+	zgtGit checkout -b ${ZGT_BRANCH}_MERGE
+	
+	for b in $(git branch --no-merged);do
+		zgtGit merge $b -m "$b merged"
+		zgtGit branch -D $b
+	done
+	zgtGit checkout $ZGT_BRANCH
+	
+	# One have to decide what to do with merged file (git or send to external se)
+	zgtGit checkout ${ZGT_BRANCH}_MERGE \*.root
+	zgtGit checkout ${ZGT_BRANCH}_MERGE \*.log
+	zgtGit commit -a -m "Saving merged files $(date)"
+	zgtGit branch -D ${ZGT_BRANCH}_MERGE
+		
+	# Cleanup 
+	zgtMsgInfo "JOB Cleanup started $(date)"
+	zgtGitCleanup
+	zgtMsgInfo "JOB Cleanup done $(date)"
+	
+	zgtMsgInfo "JOB Done $(date)"
+	zgtGit add $ZGT_LOG_JOB
+	zgtGit commit $ZGT_LOG_JOB -m "JOB Done $(date)"
+	
+	# Push
+	zgtGit push origin $ZGT_BRANCH	
+}
+
+function zgtGitCleanup() {
+	sleep 1
+	zgtGit for-each-ref --format="%(refname)" refs/original/ | xargs -n1 --no-run-if-empty git update-ref -d
+	zgtGit -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 -c gc.rerereresolved=0 -c gc.rerereunresolved=0 -c gc.pruneExpire=now gc
+}
+
+# list all remote branches starting zgt_*
+# git ls-remote --heads origin zgt_* |  sed 's?.*refs/heads/??'
+
+zgtStart
+zgtRun $ZGT_JOB_ID
+zgtEnd
