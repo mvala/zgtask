@@ -152,8 +152,8 @@ zgtask_tree_print (zgtask_tree_t *self)
     	if (p) printf(" ");
     	p = (zgtask_tree_t *) zgtask_tree_get_parent(p);
     }
-    printf ("name=%s\n", self->name);
-//    zgtask_task_print (self->task);
+    printf ("name=%s ", self->name);
+    zgtask_task_print (self->task);
     if (self->child) zgtask_tree_print(self->child);
     if (self->brother) zgtask_tree_print(self->brother);
 }
