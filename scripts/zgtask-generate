@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ZGT_DIR=$(dirname $(dirname $(readlink -m ${0})))
+
+cd $ZGT_DIR
+./generate.sh && ./autogen.sh && ./configure
