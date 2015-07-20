@@ -23,9 +23,11 @@
 //  Structure of our class
 
 struct _zgtask_tree_t {
+	char *name;
 	zgtask_task_t *task;
-	zgtask_tree_t *firstchild;
-    zgtask_tree_t *nextsibling;
+	zgtask_tree_t *parent;
+	zgtask_tree_t *child;
+    zgtask_tree_t *brother;
 };
 
 
@@ -33,15 +35,17 @@ struct _zgtask_tree_t {
 //  Create a new zgtask_tree.
 
 zgtask_tree_t *
-zgtask_tree_new ()
+zgtask_tree_new (char *name, zgtask_tree_t *parent)
 {
     zgtask_tree_t *self = (zgtask_tree_t *) zmalloc (sizeof (zgtask_tree_t));
     assert (self);
 
-    //  TODO: Initialize properties
-    self->task = zgtask_task_new();
-    self->firstchild = 0;
-    self->nextsibling = 0;
+    // Initialize properties
+    self->name = strdup(name);
+    self->task = zgtask_task_new("");
+    self->parent = parent;
+    self->child = 0;
+    self->brother = 0;
 
     return self;
 }
@@ -56,10 +60,11 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
     if (*self_p) {
         zgtask_tree_t *self = *self_p;
 
-        //  TODO: Free class properties
+        // Free class properties
+        free(self->name);
         zgtask_task_destroy(&self->task);
-        zgtask_tree_destroy(&self->firstchild);
-        zgtask_tree_destroy(&self->nextsibling);
+        zgtask_tree_destroy(&self->child);
+        zgtask_tree_destroy(&self->brother);
 
         //  Free object itself
         free (self);
@@ -67,6 +72,72 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
     }
 }
 
+//  --------------------------------------------------------------------------
+//  Return task object
+
+zgtask_task_t *
+zgtask_tree_get_task (zgtask_tree_t *self)
+{
+	return self->task;
+}
+
+//  --------------------------------------------------------------------------
+//  Return child
+
+zgtask_tree_t *
+zgtask_tree_get_child (zgtask_tree_t *self)
+{
+	if (!self) return 0;
+	return self->child;
+}
+
+//  --------------------------------------------------------------------------
+//  Return brother
+
+zgtask_tree_t *
+zgtask_tree_get_brother (zgtask_tree_t *self)
+{
+	if (!self) return 0;
+	return self->brother;
+}
+
+//  --------------------------------------------------------------------------
+//  Returns parent
+
+zgtask_tree_t *
+zgtask_tree_get_parent (zgtask_tree_t *self)
+{
+	if (!self) return 0;
+	return self->parent;
+}
+
+//  --------------------------------------------------------------------------
+//  Add child
+
+zgtask_tree_t *
+zgtask_tree_add_child (zgtask_tree_t *self, char *name)
+{
+	assert (self);
+
+	if (!self->child)
+		self->child = zgtask_tree_new (name, self);
+
+	return self->child;
+}
+
+//  --------------------------------------------------------------------------
+//  Add brother
+
+zgtask_tree_t *
+zgtask_tree_add_brother (zgtask_tree_t *self, char *name)
+{
+	assert (self);
+
+	if (!self->brother)
+		self->brother = zgtask_tree_new (name, zgtask_tree_get_parent(self));
+
+	return self->brother;
+}
 
 //  --------------------------------------------------------------------------
 //  Print properties of the zgtask_tree object.
@@ -75,7 +146,16 @@ void
 zgtask_tree_print (zgtask_tree_t *self)
 {
     assert (self);
-    zgtask_task_print(self->task);
+
+    zgtask_tree_t *p = self->parent;
+    while (p) {
+    	if (p) printf(" ");
+    	p = (zgtask_tree_t *) zgtask_tree_get_parent(p);
+    }
+    printf ("name=%s\n", self->name);
+//    zgtask_task_print (self->task);
+    if (self->child) zgtask_tree_print(self->child);
+    if (self->brother) zgtask_tree_print(self->brother);
 }
 
 
@@ -89,7 +169,7 @@ zgtask_tree_test (bool verbose)
 
     //  @selftest
     //  Simple create/destroy test
-    zgtask_tree_t *self = zgtask_tree_new ();
+    zgtask_tree_t *self = zgtask_tree_new ("t1", 0);
     assert (self);
     zgtask_tree_destroy (&self);
     //  @end

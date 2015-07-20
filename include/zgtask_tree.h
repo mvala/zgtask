@@ -22,11 +22,35 @@ extern "C" {
 //  @interface
 //  Create a new zgtask_tree
 ZGTASK_EXPORT zgtask_tree_t *
-    zgtask_tree_new (void);
+    zgtask_tree_new (char *name, zgtask_tree_t *parent);
 
 //  Destroy the zgtask_tree
 ZGTASK_EXPORT void
     zgtask_tree_destroy (zgtask_tree_t **self_p);
+
+//  Returns task object
+ZGTASK_EXPORT zgtask_task_t *
+    zgtask_tree_get_task (zgtask_tree_t *self);
+
+//  Returns child
+ZGTASK_EXPORT zgtask_tree_t *
+    zgtask_tree_get_child (zgtask_tree_t *self);
+
+//  Returns brother
+ZGTASK_EXPORT zgtask_tree_t *
+    zgtask_tree_get_brother (zgtask_tree_t *self);
+
+//  Returns parent
+ZGTASK_EXPORT zgtask_tree_t *
+    zgtask_tree_get_parent (zgtask_tree_t *self);
+
+//  Add child
+ZGTASK_EXPORT zgtask_tree_t *
+    zgtask_tree_add_child (zgtask_tree_t *self, char *name);
+
+//  Add brother
+ZGTASK_EXPORT zgtask_tree_t *
+    zgtask_tree_add_brother (zgtask_tree_t *self, char *name);
 
 //  Print properties of object
 ZGTASK_EXPORT void

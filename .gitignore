@@ -72,3 +72,5 @@ src/app/jni/output
 .cproject
 .settings
 
+src/zgtask_tester
+

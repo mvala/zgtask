@@ -22,11 +22,19 @@ extern "C" {
 //  @interface
 //  Create a new zgtask_task
 ZGTASK_EXPORT zgtask_task_t *
-    zgtask_task_new (void);
+    zgtask_task_new (char *cmd);
 
 //  Destroy the zgtask_task
 ZGTASK_EXPORT void
     zgtask_task_destroy (zgtask_task_t **self_p);
+
+//  Sets command
+ZGTASK_EXPORT void
+    zgtask_task_set_command (zgtask_task_t *self, char *cmd);
+
+//  Sets required time
+ZGTASK_EXPORT void
+    zgtask_task_set_required_time (zgtask_task_t *self, uint t);
 
 //  Print properties of object
 ZGTASK_EXPORT void

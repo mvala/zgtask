@@ -46,6 +46,12 @@ endif
 
 src_libzgtask_la_LIBADD = ${project_libs}
 
+if WITH_ZGTASK_TESTER
+bin_PROGRAMS += src/zgtask_tester
+src_zgtask_tester_CPPFLAGS = ${AM_CPPFLAGS}
+src_zgtask_tester_LDADD = ${program_libs}
+src_zgtask_tester_SOURCES = src/zgtask_tester.c
+endif
 check_PROGRAMS += src/zgtask_selftest
 src_zgtask_selftest_CPPFLAGS = ${src_libzgtask_la_CPPFLAGS}
 src_zgtask_selftest_LDADD = ${program_libs}

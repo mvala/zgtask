@@ -80,7 +80,7 @@
     <main name = "progname" private = "1">Internal tool</main>
     <main name = "progname" service = "1">Installed as system service</main>
     -->
-
+    <main name = "zgtask_tester">zgtask tester tool</main>
     <!--
         Models that we build using GSL.
         This will generate a 'make code' target to build the models.

@@ -21,11 +21,10 @@
 #include "../include/zgtask.h"
 
 //  Structure of our class
-#define MAX_LENGTH 255
 
 struct _zgtask_task_t {
-	char command[MAX_LENGTH];
-	int required_time;
+	char *command;
+	uint required_time;
 };
 
 
@@ -33,12 +32,14 @@ struct _zgtask_task_t {
 //  Create a new zgtask_task.
 
 zgtask_task_t *
-zgtask_task_new ()
+zgtask_task_new (char *cmd)
 {
     zgtask_task_t *self = (zgtask_task_t *) zmalloc (sizeof (zgtask_task_t));
     assert (self);
 
-    //  TODO: Initialize properties
+    // Initialize properties
+    self->command = strdup(cmd);
+    self->required_time = 0;
 
     return self;
 }
@@ -53,12 +54,34 @@ zgtask_task_destroy (zgtask_task_t **self_p)
     if (*self_p) {
         zgtask_task_t *self = *self_p;
 
-        //  TODO: Free class properties
+        // Free class properties
+        free(self->command);
 
         //  Free object itself
         free (self);
         *self_p = NULL;
     }
+}
+
+//  --------------------------------------------------------------------------
+//  Sets command
+void
+zgtask_task_set_command (zgtask_task_t *self, char *cmd)
+{
+	assert (self);
+
+	free(self->command);
+	self->command = strdup(cmd);
+}
+
+//  --------------------------------------------------------------------------
+//  Sets required time
+
+void
+zgtask_task_set_required_time (zgtask_task_t *self, uint t)
+{
+	assert (self);
+	self->required_time = t;
 }
 
 
@@ -69,6 +92,8 @@ void
 zgtask_task_print (zgtask_task_t *self)
 {
     assert (self);
+	printf("cmd='%s' time=%d\n", self->command, self->required_time);
+
 }
 
 
@@ -82,7 +107,7 @@ zgtask_task_test (bool verbose)
 
     //  @selftest
     //  Simple create/destroy test
-    zgtask_task_t *self = zgtask_task_new ();
+    zgtask_task_t *self = zgtask_task_new ("t");
     assert (self);
     zgtask_task_destroy (&self);
     //  @end

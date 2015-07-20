@@ -237,6 +237,16 @@ AM_CONDITIONAL(ON_ANDROID, test "x$zgtask_on_android" = "xyes")
 AM_CONDITIONAL(INSTALL_MAN, test "x$zgtask_install_man" = "xyes")
 AM_CONDITIONAL(BUILD_DOC, test "x$zgtask_build_doc" = "xyes")
 
+# Check for zgtask_tester intent
+AC_ARG_WITH([zgtask_tester],
+    AS_HELP_STRING([--with-zgtask_tester],
+        [Compile and install the zgtask_tester program [default=yes].]),
+    [with_zgtask_tester=$withval],
+    [with_zgtask_tester=yes])
+
+AM_CONDITIONAL([WITH_ZGTASK_TESTER], [test x$with_zgtask_tester != xno])
+AM_COND_IF([WITH_ZGTASK_TESTER], [AC_MSG_NOTICE([WITH_ZGTASK_TESTER defined])])
+
 # Checks for library functions.
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS(perror gettimeofday memset getifaddrs)
