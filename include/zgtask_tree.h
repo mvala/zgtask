@@ -28,6 +28,14 @@ ZGTASK_EXPORT zgtask_tree_t *
 ZGTASK_EXPORT void
     zgtask_tree_destroy (zgtask_tree_t **self_p);
 
+//  Search for tree
+ZGTASK_EXPORT zgtask_tree_t *
+    zgtask_tree_lookup (zgtask_tree_t *self, char *name);
+
+//  Returns name
+ZGTASK_EXPORT char *
+    zgtask_tree_get_name (zgtask_tree_t *self);
+
 //  Returns task object
 ZGTASK_EXPORT zgtask_task_t *
     zgtask_tree_get_task (zgtask_tree_t *self);
@@ -46,11 +54,19 @@ ZGTASK_EXPORT zgtask_tree_t *
 
 //  Add child
 ZGTASK_EXPORT zgtask_tree_t *
-    zgtask_tree_add_child (zgtask_tree_t *self, char *name);
+    zgtask_tree_add_child (zgtask_tree_t *self, const char *format, ...);
 
 //  Add brother
 ZGTASK_EXPORT zgtask_tree_t *
-    zgtask_tree_add_brother (zgtask_tree_t *self, char *name);
+    zgtask_tree_add_brother (zgtask_tree_t *self, const char *format, ...);
+
+//  Sets subtree status
+ZGTASK_EXPORT int
+    zgtask_tree_set_status_subtree (zgtask_tree_t *self, char *name, int status);
+
+//  Generates subjobs
+ZGTASK_EXPORT int
+    zgtask_tree_generate (zgtask_tree_t *self, int min, int max);
 
 //  Print properties of object
 ZGTASK_EXPORT void

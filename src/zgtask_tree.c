@@ -28,6 +28,7 @@ struct _zgtask_tree_t {
 	zgtask_tree_t *parent;
 	zgtask_tree_t *child;
     zgtask_tree_t *brother;
+
 };
 
 
@@ -73,6 +74,47 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
 }
 
 //  --------------------------------------------------------------------------
+//  Search for tree
+
+zgtask_tree_t *
+zgtask_tree_lookup (zgtask_tree_t *self, char *name)
+{
+	if (!self)
+		return 0;
+	if (!self->child && !self->brother)
+		return 0;
+
+	if (self->child) {
+		if (strcmp (zgtask_tree_get_name (self->child), name) == 0)
+			return self->child;
+	}
+	if (self->brother) {
+		if (strcmp (zgtask_tree_get_name (self->brother), name) == 0)
+			return self->brother;
+	}
+	zgtask_tree_t *t;
+	t = zgtask_tree_lookup (self->child, name);
+	if (t)
+		return t;
+	t = zgtask_tree_lookup (self->brother, name);
+	if (t)
+		return t;
+
+	return 0;
+}
+
+//  --------------------------------------------------------------------------
+//  Returns name
+
+char *
+zgtask_tree_get_name (zgtask_tree_t *self)
+{
+	assert (self);
+	return self->name;
+}
+
+
+//  --------------------------------------------------------------------------
 //  Return task object
 
 zgtask_task_t *
@@ -115,9 +157,18 @@ zgtask_tree_get_parent (zgtask_tree_t *self)
 //  Add child
 
 zgtask_tree_t *
-zgtask_tree_add_child (zgtask_tree_t *self, char *name)
+zgtask_tree_add_child (zgtask_tree_t *self,  const char *format, ...)
 {
 	assert (self);
+	assert (format);
+
+    va_list argptr;
+    va_start (argptr, format);
+    char *name = zsys_vprintf (format, argptr);
+    if (!name)
+        return 0;
+
+    va_end (argptr);
 
 	if (!self->child)
 		self->child = zgtask_tree_new (name, self);
@@ -129,14 +180,83 @@ zgtask_tree_add_child (zgtask_tree_t *self, char *name)
 //  Add brother
 
 zgtask_tree_t *
-zgtask_tree_add_brother (zgtask_tree_t *self, char *name)
+zgtask_tree_add_brother (zgtask_tree_t *self,  const char *format, ...)
 {
 	assert (self);
+	assert (format);
+
+    va_list argptr;
+    va_start (argptr, format);
+    char *name = zsys_vprintf (format, argptr);
+    if (!name)
+        return 0;
+
+    va_end (argptr);
 
 	if (!self->brother)
 		self->brother = zgtask_tree_new (name, zgtask_tree_get_parent(self));
 
 	return self->brother;
+}
+
+//  --------------------------------------------------------------------------
+//  Sets subtree status
+
+int
+zgtask_tree_set_status_subtree (zgtask_tree_t *self, char *name, int status)
+{
+	assert (self);
+
+	zgtask_tree_t *t = zgtask_tree_lookup (self, name);
+	if (!t) return -1;
+
+	//  Sets status to tree with name
+	zgtask_task_t *task = zgtask_tree_get_task(t);
+	zgtask_task_set_status(task, status);
+
+	//  Sets status to current tree also
+	zgtask_tree_t *p = zgtask_tree_get_parent(t);
+	while (p) {
+		task = zgtask_tree_get_task(p);
+		zgtask_task_set_status(task, status);
+		p = zgtask_tree_get_parent(p);
+	}
+	return 0;
+}
+
+//  --------------------------------------------------------------------------
+//  Generates subjobs
+
+int
+zgtask_tree_generate (zgtask_tree_t *self, int min, int max)
+{
+	assert (self);
+
+	uint n = 0;
+	zgtask_task_t *task = zgtask_tree_get_task(self);
+	zgtask_tree_t *t = zgtask_tree_add_child (self, "t%d", min);
+	zgtask_task_t *subtask = zgtask_tree_get_task(t);
+	zgtask_task_set_command(subtask, zgtask_task_get_command (task));
+	zgtask_task_set_min_max(subtask, min, min);
+	n++;
+
+	int i;
+	for (i = min+1; i <= max; i++) {
+		t = zgtask_tree_add_brother(t, "t%d", i);
+		zgtask_task_t *subtask = zgtask_tree_get_task(t);
+		zgtask_task_set_command(subtask, zgtask_task_get_command (task));
+		zgtask_task_set_min_max(subtask, i, i);
+		n++;
+	}
+
+	//  Sets status to current tree also
+	zgtask_tree_t *p = zgtask_tree_get_parent(t);
+	while (p) {
+		task = zgtask_tree_get_task(p);
+		zgtask_task_add_assigned(task, n);
+		p = zgtask_tree_get_parent(p);
+	}
+	return n;
 }
 
 //  --------------------------------------------------------------------------

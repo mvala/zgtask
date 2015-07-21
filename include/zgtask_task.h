@@ -28,13 +28,33 @@ ZGTASK_EXPORT zgtask_task_t *
 ZGTASK_EXPORT void
     zgtask_task_destroy (zgtask_task_t **self_p);
 
+//  Gets command
+ZGTASK_EXPORT char *
+    zgtask_task_get_command (zgtask_task_t *self);
+
+//  Gets min and max
+ZGTASK_EXPORT void
+    zgtask_task_get_min_max (zgtask_task_t *self, int *min, int *max);
+
 //  Sets command
 ZGTASK_EXPORT void
     zgtask_task_set_command (zgtask_task_t *self, char *cmd);
 
+//  Sets min and max
+ZGTASK_EXPORT void
+    zgtask_task_set_min_max (zgtask_task_t *self, int min, int max);
+
+//  Sets status
+ZGTASK_EXPORT void
+    zgtask_task_set_status (zgtask_task_t *self, int status);
+
 //  Sets required time
 ZGTASK_EXPORT void
     zgtask_task_set_required_time (zgtask_task_t *self, uint t);
+
+//  Adds assigned jobs
+ZGTASK_EXPORT void
+    zgtask_task_add_assigned (zgtask_task_t *self, uint n);
 
 //  Print properties of object
 ZGTASK_EXPORT void

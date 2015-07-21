@@ -24,7 +24,13 @@
 
 struct _zgtask_task_t {
 	char *command;
+	int min;
+	int max;
+	int status;
 	uint required_time;
+    uint n_assigned;
+    uint n_done;
+    uint n_failed;
 };
 
 
@@ -39,7 +45,13 @@ zgtask_task_new (char *cmd)
 
     // Initialize properties
     self->command = strdup(cmd);
+    self->min = -1;
+    self->max = -1;
+    self->status = -1;
     self->required_time = 0;
+    self->n_assigned = 0;
+    self->n_done = 0;
+    self->n_failed = 0;
 
     return self;
 }
@@ -64,6 +76,28 @@ zgtask_task_destroy (zgtask_task_t **self_p)
 }
 
 //  --------------------------------------------------------------------------
+//  Gets command
+
+char *
+zgtask_task_get_command (zgtask_task_t *self)
+{
+	assert (self);
+	return self->command;
+}
+
+
+//  --------------------------------------------------------------------------
+//  Gets min and max
+
+void
+zgtask_task_get_min_max (zgtask_task_t *self, int *min, int *max)
+{
+	assert (self);
+	*min =  self->min;
+	*max =  self->max;
+}
+
+//  --------------------------------------------------------------------------
 //  Sets command
 void
 zgtask_task_set_command (zgtask_task_t *self, char *cmd)
@@ -75,6 +109,33 @@ zgtask_task_set_command (zgtask_task_t *self, char *cmd)
 }
 
 //  --------------------------------------------------------------------------
+//  Sets min and max
+
+void
+zgtask_task_set_min_max (zgtask_task_t *self, int min, int max)
+{
+	assert (self);
+	self->min = min;
+	self->max = max;
+	self->n_assigned = max-min+1;
+}
+
+//  --------------------------------------------------------------------------
+//  Sets status
+
+void
+zgtask_task_set_status (zgtask_task_t *self, int status)
+{
+	assert (self);
+	if (self->n_assigned == 1) self->status = status;
+	if (status)
+		self->n_failed++;
+	else
+		self->n_done++;
+}
+
+
+//  --------------------------------------------------------------------------
 //  Sets required time
 
 void
@@ -84,6 +145,15 @@ zgtask_task_set_required_time (zgtask_task_t *self, uint t)
 	self->required_time = t;
 }
 
+//  --------------------------------------------------------------------------
+//  Adds assigned jobs
+
+void
+zgtask_task_add_assigned (zgtask_task_t *self, uint n)
+{
+	assert (self);
+	self->n_assigned += n;
+}
 
 //  --------------------------------------------------------------------------
 //  Print properties of the zgtask_task object.
@@ -92,7 +162,10 @@ void
 zgtask_task_print (zgtask_task_t *self)
 {
     assert (self);
-	printf("cmd='%s' time=%d\n", self->command, self->required_time);
+
+	printf("cmd='%s' min=%d max=%d A=%d D=%d F=%d status=%d time=%d\n",
+			self->command, self->min,self->max, self->n_assigned,
+			self->n_done, self->n_failed, self->status, self->required_time);
 
 }
 
