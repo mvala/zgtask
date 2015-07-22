@@ -97,6 +97,49 @@ if test "x$was_czmq_check_lib_detected" = "xno"; then
 fi
 
 
+was_jansson_check_lib_detected=no
+
+PKG_CHECK_MODULES([jansson], [libjansson],,
+    [
+        AC_ARG_WITH([libjansson],
+            [
+                AS_HELP_STRING([--with-libjansson],
+                [Specify libjansson prefix])
+            ],
+            [search_libjansson="yes"],
+            [])
+
+        jansson_synthetic_cflags=""
+        jansson_synthetic_libs="-ljansson"
+
+        if test "x$search_libjansson" = "xyes"; then
+            if test -r "${with_libjansson}/include/jansson.h"; then
+                jansson_synthetic_cflags="-I${with_libjansson}/include"
+                jansson_synthetic_libs="-L${with_libjansson}/lib -ljansson"
+            else
+                AC_MSG_ERROR([${with_libjansson}/include/jansson.h not found. Please check libjansson prefix])
+            fi
+        fi
+
+        CFLAGS="${jansson_synthetic_cflags} ${CFLAGS}"
+        LDFLAGS="${jansson_synthetic_libs} ${LDFLAGS}"
+        LIBS="${jansson_synthetic_libs} ${LIBS}"
+
+        AC_CHECK_LIB([jansson], [json_object],
+            [
+                AC_SUBST([jansson_CFLAGS],[${jansson_synthetic_cflags}])
+                AC_SUBST([jansson_LIBS],[${jansson_synthetic_libs}])
+                was_jansson_check_lib_detected=yes
+            ],
+            [AC_MSG_ERROR([cannot link with -ljansson, install libjansson.])])
+    ])
+
+if test "x$was_jansson_check_lib_detected" = "xno"; then
+    CFLAGS="${jansson_CFLAGS} ${CFLAGS}"
+    LIBS="${jansson_LIBS} ${LIBS}"
+fi
+
+
 CFLAGS="${PREVIOUS_CFLAGS}"
 LIBS="${PREVIOUS_LIBS}"
 

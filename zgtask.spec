@@ -6,7 +6,7 @@ Group:		System Environment/Libraries
 License:	LGPL v3+
 Source0:    %{name}-%{version}.tar.gz
 
-BuildRequires:  cmake, czmq-devel
+BuildRequires:  cmake, czmq-devel, asciidoc, jansson
 Requires: git
 
 %description

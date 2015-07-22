@@ -12,7 +12,7 @@ Name: libzgtask
 Description: zgtask is ZeroMQ and Git task manager
 Version: @VERSION@
 
-Requires:libzmq >= 2.2.0 libczmq >= 3.0.0
+Requires:libzmq >= 2.2.0 libczmq >= 3.0.0 libjansson
 
 Libs: -L${libdir} -lzgtask
 Cflags: -I${includedir}

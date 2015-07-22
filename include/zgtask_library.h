@@ -23,6 +23,7 @@
 
 //  External dependencies
 #include <czmq.h>
+#include <jansson.h>
 
 //  ZGTASK version macros for compile-time API detection
 

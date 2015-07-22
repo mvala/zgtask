@@ -1,5 +1,7 @@
 #include "../include/zgtask.h"
 
+#include <jansson.h>
+
 zgtask_tree_t *testTree() {
 	zgtask_tree_t *tree0 = zgtask_tree_new ("t0", 0);
 	zgtask_task_t *task = zgtask_tree_get_task (tree0);

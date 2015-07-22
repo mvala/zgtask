@@ -91,6 +91,13 @@ include_directories(${CZMQ_INCLUDE_DIRS})
 list(APPEND MORE_LIBRARIES ${CZMQ_LIBRARIES})
 
 ########################################################################
+# JANSSON dependency
+########################################################################
+find_package(Jansson REQUIRED)
+include_directories(${JANSSON_INCLUDE_DIRS})
+list(APPEND MORE_LIBRARIES ${JANSSON_LIBRARIES})
+
+########################################################################
 # includes
 ########################################################################
 set (zgtask_headers
