@@ -97,7 +97,7 @@ testJsonExport ()
 {
 
     zgtask_tree_t *client = testJobs2 (1, 10);
-    char *json_str = zgtask_tree_export_json (client, "/tmp/mv.json", 0);
+    char *json_str = zgtask_tree_export_json (client, "/tmp/zgtask_test.json", 0);
     if (json_str)
         printf ("%s\n", json_str);
 
