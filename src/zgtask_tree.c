@@ -1,13 +1,13 @@
 /*  =========================================================================
     zgtask_tree - Tree object for zgtask
 
-    Copyright (c) the Contributors as noted in the AUTHORS file.       
-    This file is part of CZMQ, the high-level C binding for 0MQ:       
-    http://czmq.zeromq.org.                                            
-                                                                       
+    Copyright (c) the Contributors as noted in the AUTHORS file.
+    This file is part of CZMQ, the high-level C binding for 0MQ:
+    http://czmq.zeromq.org.
+
     This Source Code Form is subject to the terms of the Mozilla Public
     License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.           
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
     =========================================================================
 */
 
@@ -23,10 +23,10 @@
 //  Structure of our class
 
 struct _zgtask_tree_t {
-	char *name;
-	zgtask_task_t *task;
-	zgtask_tree_t *parent;
-	zgtask_tree_t *child;
+    char *name;
+    zgtask_task_t *task;
+    zgtask_tree_t *parent;
+    zgtask_tree_t *child;
     zgtask_tree_t *brother;
 
 };
@@ -42,8 +42,8 @@ zgtask_tree_new (char *name, zgtask_tree_t *parent)
     assert (self);
 
     // Initialize properties
-    self->name = strdup(name);
-    self->task = zgtask_task_new("");
+    self->name = strdup (name);
+    self->task = zgtask_task_new ("");
     self->parent = parent;
     self->child = 0;
     self->brother = 0;
@@ -62,10 +62,10 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
         zgtask_tree_t *self = *self_p;
 
         // Free class properties
-        free(self->name);
-        zgtask_task_destroy(&self->task);
-        zgtask_tree_destroy(&self->child);
-        zgtask_tree_destroy(&self->brother);
+        free (self->name);
+        zgtask_task_destroy (&self->task);
+        zgtask_tree_destroy (&self->child);
+        zgtask_tree_destroy (&self->brother);
 
         //  Free object itself
         free (self);
@@ -79,28 +79,26 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
 zgtask_tree_t *
 zgtask_tree_lookup (zgtask_tree_t *self, char *name)
 {
-	if (!self)
-		return 0;
-	if (!self->child && !self->brother)
-		return 0;
+    if (!self)
+        return 0;
+    if (!self->child && !self->brother)
+        return 0;
 
-	if (self->child) {
-		if (strcmp (zgtask_tree_get_name (self->child), name) == 0)
-			return self->child;
-	}
-	if (self->brother) {
-		if (strcmp (zgtask_tree_get_name (self->brother), name) == 0)
-			return self->brother;
-	}
-	zgtask_tree_t *t;
-	t = zgtask_tree_lookup (self->child, name);
-	if (t)
-		return t;
-	t = zgtask_tree_lookup (self->brother, name);
-	if (t)
-		return t;
+    if (self->child)
+        if (strcmp (zgtask_tree_get_name (self->child), name) == 0)
+            return self->child;
+    if (self->brother)
+        if (strcmp (zgtask_tree_get_name (self->brother), name) == 0)
+            return self->brother;
+    zgtask_tree_t *t;
+    t = zgtask_tree_lookup (self->child, name);
+    if (t)
+        return t;
+    t = zgtask_tree_lookup (self->brother, name);
+    if (t)
+        return t;
 
-	return 0;
+    return 0;
 }
 
 //  --------------------------------------------------------------------------
@@ -109,8 +107,8 @@ zgtask_tree_lookup (zgtask_tree_t *self, char *name)
 char *
 zgtask_tree_get_name (zgtask_tree_t *self)
 {
-	assert (self);
-	return self->name;
+    assert (self);
+    return self->name;
 }
 
 
@@ -120,7 +118,7 @@ zgtask_tree_get_name (zgtask_tree_t *self)
 zgtask_task_t *
 zgtask_tree_get_task (zgtask_tree_t *self)
 {
-	return self->task;
+    return self->task;
 }
 
 //  --------------------------------------------------------------------------
@@ -129,8 +127,8 @@ zgtask_tree_get_task (zgtask_tree_t *self)
 zgtask_tree_t *
 zgtask_tree_get_child (zgtask_tree_t *self)
 {
-	if (!self) return 0;
-	return self->child;
+    if (!self) return 0;
+    return self->child;
 }
 
 //  --------------------------------------------------------------------------
@@ -139,8 +137,8 @@ zgtask_tree_get_child (zgtask_tree_t *self)
 zgtask_tree_t *
 zgtask_tree_get_brother (zgtask_tree_t *self)
 {
-	if (!self) return 0;
-	return self->brother;
+    if (!self) return 0;
+    return self->brother;
 }
 
 //  --------------------------------------------------------------------------
@@ -149,8 +147,8 @@ zgtask_tree_get_brother (zgtask_tree_t *self)
 zgtask_tree_t *
 zgtask_tree_get_parent (zgtask_tree_t *self)
 {
-	if (!self) return 0;
-	return self->parent;
+    if (!self) return 0;
+    return self->parent;
 }
 
 //  --------------------------------------------------------------------------
@@ -159,8 +157,8 @@ zgtask_tree_get_parent (zgtask_tree_t *self)
 zgtask_tree_t *
 zgtask_tree_add_child (zgtask_tree_t *self,  const char *format, ...)
 {
-	assert (self);
-	assert (format);
+    assert (self);
+    assert (format);
 
     va_list argptr;
     va_start (argptr, format);
@@ -170,10 +168,10 @@ zgtask_tree_add_child (zgtask_tree_t *self,  const char *format, ...)
 
     va_end (argptr);
 
-	if (!self->child)
-		self->child = zgtask_tree_new (name, self);
+    if (!self->child)
+        self->child = zgtask_tree_new (name, self);
 
-	return self->child;
+    return self->child;
 }
 
 //  --------------------------------------------------------------------------
@@ -182,8 +180,8 @@ zgtask_tree_add_child (zgtask_tree_t *self,  const char *format, ...)
 zgtask_tree_t *
 zgtask_tree_add_brother (zgtask_tree_t *self,  const char *format, ...)
 {
-	assert (self);
-	assert (format);
+    assert (self);
+    assert (format);
 
     va_list argptr;
     va_start (argptr, format);
@@ -193,10 +191,10 @@ zgtask_tree_add_brother (zgtask_tree_t *self,  const char *format, ...)
 
     va_end (argptr);
 
-	if (!self->brother)
-		self->brother = zgtask_tree_new (name, zgtask_tree_get_parent(self));
+    if (!self->brother)
+        self->brother = zgtask_tree_new (name, zgtask_tree_get_parent (self));
 
-	return self->brother;
+    return self->brother;
 }
 
 //  --------------------------------------------------------------------------
@@ -205,23 +203,23 @@ zgtask_tree_add_brother (zgtask_tree_t *self,  const char *format, ...)
 int
 zgtask_tree_set_status_subtree (zgtask_tree_t *self, char *name, int status)
 {
-	assert (self);
+    assert (self);
 
-	zgtask_tree_t *t = zgtask_tree_lookup (self, name);
-	if (!t) return -1;
+    zgtask_tree_t *t = zgtask_tree_lookup (self, name);
+    if (!t) return -1;
 
-	//  Sets status to tree with name
-	zgtask_task_t *task = zgtask_tree_get_task(t);
-	zgtask_task_set_status(task, status);
+    //  Sets status to tree with name
+    zgtask_task_t *task = zgtask_tree_get_task (t);
+    zgtask_task_set_status (task, status);
 
-	//  Sets status to current tree also
-	zgtask_tree_t *p = zgtask_tree_get_parent(t);
-	while (p) {
-		task = zgtask_tree_get_task(p);
-		zgtask_task_set_status(task, status);
-		p = zgtask_tree_get_parent(p);
-	}
-	return 0;
+    //  Sets status to current tree also
+    zgtask_tree_t *p = zgtask_tree_get_parent (t);
+    while (p) {
+        task = zgtask_tree_get_task (p);
+        zgtask_task_set_status (task, status);
+        p = zgtask_tree_get_parent (p);
+    }
+    return 0;
 }
 
 //  --------------------------------------------------------------------------
@@ -230,33 +228,84 @@ zgtask_tree_set_status_subtree (zgtask_tree_t *self, char *name, int status)
 int
 zgtask_tree_generate (zgtask_tree_t *self, int min, int max)
 {
-	assert (self);
+    assert (self);
 
-	uint n = 0;
-	zgtask_task_t *task = zgtask_tree_get_task(self);
-	zgtask_tree_t *t = zgtask_tree_add_child (self, "t%d", min);
-	zgtask_task_t *subtask = zgtask_tree_get_task(t);
-	zgtask_task_set_command(subtask, zgtask_task_get_command (task));
-	zgtask_task_set_min_max(subtask, min, min);
-	n++;
+    uint n = 0;
+    zgtask_task_t *task = zgtask_tree_get_task (self);
+    zgtask_tree_t *t = zgtask_tree_add_child (self, "t%d", min);
+    zgtask_task_t *subtask = zgtask_tree_get_task (t);
+    zgtask_task_set_command (subtask, zgtask_task_get_command (task));
+    zgtask_task_set_min_max (subtask, min, min);
+    n++;
 
-	int i;
-	for (i = min+1; i <= max; i++) {
-		t = zgtask_tree_add_brother(t, "t%d", i);
-		zgtask_task_t *subtask = zgtask_tree_get_task(t);
-		zgtask_task_set_command(subtask, zgtask_task_get_command (task));
-		zgtask_task_set_min_max(subtask, i, i);
-		n++;
-	}
+    int i;
+    for (i = min+1; i <= max; i++) {
+        t = zgtask_tree_add_brother (t, "t%d", i);
+        zgtask_task_t *subtask = zgtask_tree_get_task (t);
+        zgtask_task_set_command (subtask, zgtask_task_get_command (task));
+        zgtask_task_set_min_max (subtask, i, i);
+        n++;
+    }
 
-	//  Sets status to current tree also
-	zgtask_tree_t *p = zgtask_tree_get_parent(t);
-	while (p) {
-		task = zgtask_tree_get_task(p);
-		zgtask_task_add_assigned(task, n);
-		p = zgtask_tree_get_parent(p);
-	}
-	return n;
+    //  Sets status to current tree also
+    zgtask_tree_t *p = zgtask_tree_get_parent (t);
+    while (p) {
+        task = zgtask_tree_get_task (p);
+        zgtask_task_add_assigned (task, n);
+        p = zgtask_tree_get_parent (p);
+    }
+    return n;
+}
+
+//  --------------------------------------------------------------------------
+//  Import json to tree
+int
+zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
+{
+    assert (self);
+    assert (json);
+    return 0;
+}
+
+//  --------------------------------------------------------------------------
+//  Export tree to json
+char *
+zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
+{
+    assert (self);
+    if (!json)
+        json = json_object ();
+    assert (json);
+
+    json_t *array = NULL;
+    json_t *obj_array = json_object ();
+    if (!json_is_array (json)) {
+        array = json_array ();
+        json_object_set (json, "array", array);
+    }
+    else
+        array = json;
+    json_array_append (array, obj_array);
+
+
+    json_object_set (obj_array, "name", json_string (self->name));
+    json_t *obj_task = json_object ();
+    json_object_set (obj_array, "task", obj_task);
+    zgtask_task_t *task = zgtask_tree_get_task (self);
+    zgtask_task_export_json (task, obj_task);
+
+    if (self->brother)
+        zgtask_tree_export_json (self->brother, 0, array);
+
+    if (self->child)
+        zgtask_tree_export_json (self->child, 0, obj_array);
+
+    if (self->parent)
+        return 0;
+
+    if (path)
+        json_dump_file (json, path, JSON_STRICT);
+    return json_dumps (json, JSON_STRICT);
 }
 
 //  --------------------------------------------------------------------------
@@ -269,13 +318,13 @@ zgtask_tree_print (zgtask_tree_t *self)
 
     zgtask_tree_t *p = self->parent;
     while (p) {
-    	if (p) printf(" ");
-    	p = (zgtask_tree_t *) zgtask_tree_get_parent(p);
+        if (p) printf (" ");
+        p = (zgtask_tree_t *) zgtask_tree_get_parent (p);
     }
     printf ("name=%s ", self->name);
     zgtask_task_print (self->task);
-    if (self->child) zgtask_tree_print(self->child);
-    if (self->brother) zgtask_tree_print(self->brother);
+    if (self->child) zgtask_tree_print (self->child);
+    if (self->brother) zgtask_tree_print (self->brother);
 }
 
 
