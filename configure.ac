@@ -97,6 +97,18 @@ if test "x$was_czmq_check_lib_detected" = "xno"; then
 fi
 
 
+was_zyre_check_lib_detected=no
+
+PKG_CHECK_MODULES([zyre], [libzyre >= 1.1.0],,
+    [AC_MSG_ERROR([Cannot find required package for libzyre. Note, pkg-config is required due to specified version >= 1.1.0])
+  ])
+
+if test "x$was_zyre_check_lib_detected" = "xno"; then
+    CFLAGS="${zyre_CFLAGS} ${CFLAGS}"
+    LIBS="${zyre_LIBS} ${LIBS}"
+fi
+
+
 was_jansson_check_lib_detected=no
 
 PKG_CHECK_MODULES([jansson], [libjansson],,

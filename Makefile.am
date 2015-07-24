@@ -8,12 +8,14 @@ ACLOCAL_AMFLAGS = -I config
 AM_CPPFLAGS = \
     ${zmq_CFLAGS} \
     ${czmq_CFLAGS} \
+    ${zyre_CFLAGS} \
     ${jansson_CFLAGS} \
     -I$(srcdir)/include
 
 project_libs = \
     ${zmq_LIBS} \
     ${czmq_LIBS} \
+    ${zyre_LIBS} \
     ${jansson_LIBS}
 
 SUBDIRS =

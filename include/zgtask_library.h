@@ -22,7 +22,7 @@
 //  Set up environment for the application
 
 //  External dependencies
-#include <czmq.h>
+#include <zyre.h>
 #include <jansson.h>
 
 //  ZGTASK version macros for compile-time API detection

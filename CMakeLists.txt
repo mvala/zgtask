@@ -91,6 +91,13 @@ include_directories(${CZMQ_INCLUDE_DIRS})
 list(APPEND MORE_LIBRARIES ${CZMQ_LIBRARIES})
 
 ########################################################################
+# ZYRE dependency
+########################################################################
+find_package(Zyre REQUIRED)
+include_directories(${ZYRE_INCLUDE_DIRS})
+list(APPEND MORE_LIBRARIES ${ZYRE_LIBRARIES})
+
+########################################################################
 # JANSSON dependency
 ########################################################################
 find_package(Jansson REQUIRED)
