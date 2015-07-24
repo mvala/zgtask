@@ -266,9 +266,6 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
     assert (json);
 
     zgtask_tree_t *tree = self;
-    zgtask_task_t *task;
-
-
 	json_t *js_data;
 	json_t *js_name;
     json_t *array = json_object_get(json, "array");
@@ -294,8 +291,7 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
         if (!i) tree = zgtask_tree_add_child(tree,json_string_value(js_name));
         else tree = zgtask_tree_add_brother(tree,json_string_value(js_name));
 
-        task = zgtask_tree_get_task(tree);
-        zgtask_task_import_json(task, js_data);
+        zgtask_task_import_json(zgtask_tree_get_task(tree), js_data);
 
         zgtask_tree_import_json(tree, js_data);
 
@@ -340,7 +336,7 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
         return 0;
 
     if (path)
-        json_dump_file (json, path, JSON_STRICT);
+        json_dump_file (json, path, JSON_COMPACT);
     return json_dumps (json, JSON_STRICT);
 }
 
