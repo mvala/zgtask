@@ -1,0 +1,26 @@
+zgtask_tester(1)
+================
+
+NAME
+----
+zgtask_tester - no title found
+
+SYNOPSIS
+--------
+----
+Please add @interface section in ../src/zgtask_tester.c.
+----
+
+DESCRIPTION
+-----------
+
+Please add @header section in ../src/zgtask_tester.c.
+
+Please add @discuss section in ../src/zgtask_tester.c.
+
+EXAMPLE
+-------
+.From zgtask_tester_test method
+----
+Please add @selftest section in ../src/zgtask_tester.c.
+----
