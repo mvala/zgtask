@@ -266,34 +266,37 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
     assert (json);
 
     zgtask_tree_t *tree = self;
-	json_t *js_data;
-	json_t *js_name;
-    json_t *array = json_object_get(json, "array");
+    json_t *js_data;
+    json_t *js_name;
+    json_t *array = json_object_get (json, "array");
     uint i;
-    for(i = 0; i < json_array_size(array); i++)
+    for (i = 0; i < json_array_size (array); i++)
     {
 
-    	js_data = json_array_get(array, i);
-        if(!json_is_object(js_data))
-        {
-            fprintf(stderr, "error: commit data %d is not an object\n", i + 1);
-            json_decref(json);
+        js_data = json_array_get (array, i);
+        if (!json_is_object (js_data)) {
+            fprintf (stderr, "error: commit data %d is not an object\n", i + 1);
+            json_decref (json);
             return 1;
         }
-    	js_name =  json_object_get(js_data, "name");
-        if(!json_is_string(js_name))
-        {
-        	fprintf(stderr, "error: commit %d: name is not a string\n", i + 1);
-            json_decref(json);
+        js_name =  json_object_get (js_data, "name");
+        if (!json_is_string (js_name)) {
+            fprintf (stderr, "error: commit %d: name is not a string\n", i + 1);
+            json_decref (json);
             return 1;
         }
 
-        if (!i) tree = zgtask_tree_add_child(tree,json_string_value(js_name));
-        else tree = zgtask_tree_add_brother(tree,json_string_value(js_name));
+        if (!self->parent) {
+            free (self->name);
+            self->name = strdup (json_string_value (js_name));
+        }
+        else {
+            if (!i) tree = zgtask_tree_add_child (tree, json_string_value (js_name));
+            else tree = zgtask_tree_add_brother (tree, json_string_value (js_name));
+        }
+        zgtask_task_import_json (zgtask_tree_get_task (tree), js_data);
 
-        zgtask_task_import_json(zgtask_tree_get_task(tree), js_data);
-
-        zgtask_tree_import_json(tree, js_data);
+        zgtask_tree_import_json (tree, js_data);
 
     }
     return 0;

@@ -109,14 +109,14 @@ testJsonExport (int min, int max)
 zgtask_tree_t *
 testJsonImport (int min, int max)
 {
-	if (!zsys_file_exists(JSON_FILENAME))
-		testJsonExport(min,max);
+    if (!zsys_file_exists (JSON_FILENAME))
+        testJsonExport (min, max);
     zgtask_tree_t *json_import = zgtask_tree_new ("json_import", 0);
     json_error_t err;
     json_t *json = json_load_file (JSON_FILENAME, JSON_STRICT, &err);
 
     if (json)
-    	zgtask_tree_import_json (json_import, json);
+        zgtask_tree_import_json (json_import, json);
 
     zgtask_tree_print (json_import);
     return json_import;
@@ -139,7 +139,7 @@ main (int argc, char **argv)
 
     // Test jobs
     if (argc == 2 && streq (argv [1], "2"))
-        t = testJobs2 (1, 5);
+        t = testJobs2 (1, 10);
 
     // Test jobs
     if (argc == 2 && streq (argv [1], "3"))
@@ -147,7 +147,7 @@ main (int argc, char **argv)
 
     // Test jobs
     if (argc == 2 && streq (argv [1], "4"))
-        t = testJsonImport (1,10);
+        t = testJsonImport (1, 10);
 
     if (t)
         zgtask_tree_destroy (&t);

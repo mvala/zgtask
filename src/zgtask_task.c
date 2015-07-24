@@ -151,8 +151,8 @@ zgtask_task_set_required_time (zgtask_task_t *self, uint t)
 void
 zgtask_task_set_assigned (zgtask_task_t *self, uint n)
 {
-	assert(self);
-	self->n_assigned = n;
+    assert (self);
+    self->n_assigned = n;
 }
 
 //  --------------------------------------------------------------------------
@@ -161,8 +161,8 @@ zgtask_task_set_assigned (zgtask_task_t *self, uint n)
 void
 zgtask_task_set_done (zgtask_task_t *self, uint n)
 {
-	assert(self);
-	self->n_done = n;
+    assert (self);
+    self->n_done = n;
 }
 
 //  --------------------------------------------------------------------------
@@ -171,8 +171,8 @@ zgtask_task_set_done (zgtask_task_t *self, uint n)
 void
 zgtask_task_set_failed (zgtask_task_t *self, uint n)
 {
-	assert(self);
-	self->n_failed = n;
+    assert (self);
+    self->n_failed = n;
 }
 
 //  --------------------------------------------------------------------------
@@ -194,8 +194,8 @@ zgtask_task_add_assigned (zgtask_task_t *self, uint n)
 void
 zgtask_task_add_done (zgtask_task_t *self, uint n)
 {
-	assert(self);
-	self->n_done += n;
+    assert (self);
+    self->n_done += n;
 }
 
 //  --------------------------------------------------------------------------
@@ -204,8 +204,8 @@ zgtask_task_add_done (zgtask_task_t *self, uint n)
 void
 zgtask_task_add_failed (zgtask_task_t *self, uint n)
 {
-	assert(self);
-	self->n_failed += n;
+    assert (self);
+    self->n_failed += n;
 }
 
 //  --------------------------------------------------------------------------
@@ -214,33 +214,33 @@ zgtask_task_add_failed (zgtask_task_t *self, uint n)
 void
 zgtask_task_import_json (zgtask_task_t *self, json_t *json)
 {
-	assert (self);
-	assert (json);
+    assert (self);
+    assert (json);
 
-	json_t *js_tmp,*js_tmp2;
+    json_t *js_tmp, *js_tmp2;
 
-    json_t *js_task =  json_object_get(json, "task");
-    if(!json_is_object(js_task))
-    {
-    	fprintf(stderr, "error: task is not a object\n");
-        json_decref(json);
+    json_t *js_task =  json_object_get (json, "task");
+    if (!json_is_object (js_task)) {
+        fprintf (stderr, "error: task is not a object\n");
+        json_decref (json);
         return;
     }
 
 
-    js_tmp = json_object_get(js_task, "cmd");
-    zgtask_task_set_command(self,  strdup(json_string_value(js_tmp)));
-    js_tmp = json_object_get(js_task, "status");
-    zgtask_task_set_status(self,  json_integer_value(js_tmp));
-    js_tmp = json_object_get(js_task, "min");
-    js_tmp2 = json_object_get(js_task, "max");
-    zgtask_task_set_min_max(self,  json_integer_value(js_tmp),json_integer_value(js_tmp2));
-    js_tmp = json_object_get(js_task, "assigned");
-    zgtask_task_set_assigned(self,  json_integer_value(js_tmp));
-    js_tmp = json_object_get(js_task, "done");
-    zgtask_task_set_done(self,  json_integer_value(js_tmp));
-    js_tmp = json_object_get(js_task, "failed");
-    zgtask_task_set_failed(self,  json_integer_value(js_tmp));
+    js_tmp = json_object_get (js_task, "cmd");
+    zgtask_task_set_command (self,  strdup (json_string_value (js_tmp)));
+    js_tmp = json_object_get (js_task, "status");
+    zgtask_task_set_status (self,  json_integer_value (js_tmp));
+    js_tmp = json_object_get (js_task, "min");
+    js_tmp2 = json_object_get (js_task, "max");
+    zgtask_task_set_min_max (self,  json_integer_value (js_tmp),
+                             json_integer_value (js_tmp2));
+    js_tmp = json_object_get (js_task, "assigned");
+    zgtask_task_set_assigned (self,  json_integer_value (js_tmp));
+    js_tmp = json_object_get (js_task, "done");
+    zgtask_task_set_done (self,  json_integer_value (js_tmp));
+    js_tmp = json_object_get (js_task, "failed");
+    zgtask_task_set_failed (self,  json_integer_value (js_tmp));
 }
 
 //  --------------------------------------------------------------------------
