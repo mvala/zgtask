@@ -285,15 +285,9 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
             json_decref (json);
             return 1;
         }
-
-        if (!self->parent) {
-            free (self->name);
-            self->name = strdup (json_string_value (js_name));
-        }
-        else {
-            if (!i) tree = zgtask_tree_add_child (tree, json_string_value (js_name));
-            else tree = zgtask_tree_add_brother (tree, json_string_value (js_name));
-        }
+        if (!i)
+            tree = zgtask_tree_add_child (tree, json_string_value (js_name));
+        else tree = zgtask_tree_add_brother (tree, json_string_value (js_name));
         zgtask_task_import_json (zgtask_tree_get_task (tree), js_data);
 
         zgtask_tree_import_json (tree, js_data);
