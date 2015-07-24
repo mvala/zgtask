@@ -7,6 +7,7 @@
 zgtask_tree_t *
 testTree ()
 {
+	//  Create testing tree structure
     zgtask_tree_t *tree0 = zgtask_tree_new ("t0", 0);
     zgtask_task_t *task = zgtask_tree_get_task (tree0);
     zgtask_task_set_command (task, "numcal --seed %ID%");
@@ -42,13 +43,15 @@ testTree ()
 zgtask_tree_t *
 testJobs (int min, int max)
 {
-
+	//  Creare initial tree structure
     zgtask_tree_t *c = zgtask_tree_new ("t", 0);
     zgtask_task_t *task = zgtask_tree_get_task (c);
     zgtask_task_set_command (task, "numcal --seed %ID%");
-//	zgtask_task_set_min_max (task, min, max);
 
+    //  Generate tree structure
     zgtask_tree_generate (c, min, max);
+
+    //  Sets status to some tasks
     zgtask_tree_set_status_subtree (c, "t2", 0);
     zgtask_tree_set_status_subtree (c, "t3", 5);
     zgtask_tree_set_status_subtree (c, "t4", 0);
@@ -65,7 +68,7 @@ testJobs (int min, int max)
 zgtask_tree_t *
 testJobs2 (int min, int max)
 {
-
+	//  Creare initial tree structure
     zgtask_tree_t *client = zgtask_tree_new ("client", 0);
     zgtask_tree_t *ca = zgtask_tree_add_child (client, "ClusterA");
     zgtask_tree_t *cb = zgtask_tree_add_brother (ca, "ClusterB");
@@ -74,9 +77,11 @@ testJobs2 (int min, int max)
     task = zgtask_tree_get_task (client);
     zgtask_task_set_command (task, "numcal --seed %ID%");
 
+    //  Generate tree structure
     zgtask_tree_generate (ca, min, max);
     zgtask_tree_generate (cb, min+max, 2*max);
 
+    //  Sets status to some tasks
     zgtask_tree_set_status_subtree (client, "t1", 0);
     zgtask_tree_set_status_subtree (client, "t2", 0);
     zgtask_tree_set_status_subtree (client, "t3", 0);
@@ -88,6 +93,7 @@ testJobs2 (int min, int max)
     zgtask_tree_set_status_subtree (client, "t14", 0);
     zgtask_tree_set_status_subtree (client, "t15", 0);
 
+    //  Prints client tree
     zgtask_tree_print (client);
 
     return client;
@@ -110,17 +116,27 @@ testJsonExport (int min, int max)
 zgtask_tree_t *
 testJsonImport (int min, int max)
 {
+	//  Generate input json file, if doesn't exist
     if (!zsys_file_exists (JSON_FILENAME))
         testJsonExport (min, max);
+
+    //  Create new tree
     zgtask_tree_t *json_import = zgtask_tree_new ("json_import", 0);
+
+    //  Load json file
     json_error_t err;
     json_t *json = json_load_file (JSON_FILENAME, JSON_STRICT, &err);
 
+    //  Imports json to tree
     if (json)
         zgtask_tree_import_json (json_import, json);
 
+    //  Cleaning json
     json_decref(json);
+
+    //  Prints json imported tree
     zgtask_tree_print (json_import);
+
     return json_import;
 }
 
