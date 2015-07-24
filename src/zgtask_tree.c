@@ -171,6 +171,7 @@ zgtask_tree_add_child (zgtask_tree_t *self,  const char *format, ...)
     if (!self->child)
         self->child = zgtask_tree_new (name, self);
 
+    free (name);
     return self->child;
 }
 
@@ -194,6 +195,7 @@ zgtask_tree_add_brother (zgtask_tree_t *self,  const char *format, ...)
     if (!self->brother)
         self->brother = zgtask_tree_new (name, zgtask_tree_get_parent (self));
 
+    free (name);
     return self->brother;
 }
 
@@ -310,16 +312,16 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
     json_t *obj_array = json_object ();
     if (!json_is_array (json)) {
         array = json_array ();
-        json_object_set (json, "array", array);
+        json_object_set_new (json, "array", array);
     }
     else
         array = json;
     json_array_append (array, obj_array);
 
 
-    json_object_set (obj_array, "name", json_string (self->name));
+    json_object_set_new (obj_array, "name", json_string (self->name));
     json_t *obj_task = json_object ();
-    json_object_set (obj_array, "task", obj_task);
+    json_object_set_new (obj_array, "task", obj_task);
     zgtask_task_t *task = zgtask_tree_get_task (self);
     zgtask_task_export_json (task, obj_task);
 
@@ -329,12 +331,21 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
     if (self->child)
         zgtask_tree_export_json (self->child, 0, obj_array);
 
+    //  Cleaning object array
+    json_decref(obj_array);
+
     if (self->parent)
         return 0;
 
     if (path)
         json_dump_file (json, path, JSON_COMPACT);
-    return json_dumps (json, JSON_STRICT);
+
+    char *json_str = json_dumps (json, JSON_STRICT);
+
+    //  Cleaning
+    json_decref(json);
+
+    return json_str;
 }
 
 //  --------------------------------------------------------------------------

@@ -103,6 +103,7 @@ testJsonExport (int min, int max)
     if (json_str)
         printf ("%s\n", json_str);
 
+    free (json_str);
     return client;
 }
 
@@ -118,6 +119,7 @@ testJsonImport (int min, int max)
     if (json)
         zgtask_tree_import_json (json_import, json);
 
+    json_decref(json);
     zgtask_tree_print (json_import);
     return json_import;
 }
