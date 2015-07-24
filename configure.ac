@@ -290,6 +290,16 @@ AC_ARG_WITH([zgtask_tester],
 AM_CONDITIONAL([WITH_ZGTASK_TESTER], [test x$with_zgtask_tester != xno])
 AM_COND_IF([WITH_ZGTASK_TESTER], [AC_MSG_NOTICE([WITH_ZGTASK_TESTER defined])])
 
+# Check for zgtask intent
+AC_ARG_WITH([zgtask],
+    AS_HELP_STRING([--with-zgtask],
+        [Compile and install the zgtask program [default=yes].]),
+    [with_zgtask=$withval],
+    [with_zgtask=yes])
+
+AM_CONDITIONAL([WITH_ZGTASK], [test x$with_zgtask != xno])
+AM_COND_IF([WITH_ZGTASK], [AC_MSG_NOTICE([WITH_ZGTASK defined])])
+
 # Checks for library functions.
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS(perror gettimeofday memset getifaddrs)

@@ -82,6 +82,7 @@
     <main name = "progname" service = "1">Installed as system service</main>
     -->
     <main name = "zgtask_tester">zgtask tester tool</main>
+    <main name = "zgtask">zgtask main program</main>
     <!--
         Models that we build using GSL.
         This will generate a 'make code' target to build the models.

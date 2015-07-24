@@ -73,4 +73,5 @@ src/app/jni/output
 .settings
 
 src/zgtask_tester
+src/zgtask
 
