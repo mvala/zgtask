@@ -2,6 +2,8 @@
 
 #include <jansson.h>
 
+#define JSON_FILENAME "/tmp/zgtask_test.json"
+
 zgtask_tree_t *
 testTree ()
 {
@@ -97,12 +99,28 @@ testJsonExport ()
 {
 
     zgtask_tree_t *client = testJobs2 (1, 10);
-    char *json_str = zgtask_tree_export_json (client, "/tmp/zgtask_test.json", 0);
+    char *json_str = zgtask_tree_export_json (client, JSON_FILENAME, 0);
     if (json_str)
         printf ("%s\n", json_str);
 
     return client;
 }
+
+zgtask_tree_t *
+testJsonImport ()
+{
+	testJsonExport(1,10);
+    zgtask_tree_t *json_import = zgtask_tree_new ("json_import", 0);
+    json_error_t err;
+    json_t *json = json_load_file (JSON_FILENAME, JSON_STRICT, &err);
+    if (json)
+    	zgtask_tree_import_json (json_import, json);
+
+    zgtask_tree_print (json_import);
+    return json_import;
+}
+
+
 int
 main (int argc, char **argv)
 {
@@ -124,6 +142,10 @@ main (int argc, char **argv)
     // Test jobs
     if (argc == 2 && streq (argv [1], "3"))
         t = testJsonExport ();
+
+    // Test jobs
+    if (argc == 2 && streq (argv [1], "4"))
+        t = testJsonImport ();
 
     if (t)
         zgtask_tree_destroy (&t);

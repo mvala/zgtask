@@ -52,9 +52,33 @@ zgtask_task_set_status (zgtask_task_t *self, int status);
 ZGTASK_EXPORT void
 zgtask_task_set_required_time (zgtask_task_t *self, uint t);
 
+//  Sets assigned
+ZGTASK_EXPORT void
+zgtask_task_set_assigned (zgtask_task_t *self, uint n);
+
+//  Sets done
+ZGTASK_EXPORT void
+zgtask_task_set_done (zgtask_task_t *self, uint n);
+
+//  Sets assigned
+ZGTASK_EXPORT void
+zgtask_task_set_failed (zgtask_task_t *self, uint n);
+
 //  Adds assigned jobs
 ZGTASK_EXPORT void
 zgtask_task_add_assigned (zgtask_task_t *self, uint n);
+
+//  Adds done jobs
+ZGTASK_EXPORT void
+zgtask_task_add_done (zgtask_task_t *self, uint n);
+
+//  Adds failed jobs
+ZGTASK_EXPORT void
+zgtask_task_add_failed (zgtask_task_t *self, uint n);
+
+//  Inports task to json
+ZGTASK_EXPORT void
+zgtask_task_import_json (zgtask_task_t *self, json_t *json);
 
 //  Exports task to json
 ZGTASK_EXPORT void
