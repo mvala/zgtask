@@ -36,7 +36,6 @@ zgtask_net_new (const char *name)
     zgtask_net_t *self = (zgtask_net_t *) zmalloc (sizeof (zgtask_net_t));
     assert (self);
 
-    //  TODO: Initialize properties
     self->zyre = zyre_new (name);
 
     return self;
@@ -52,7 +51,6 @@ zgtask_net_destroy (zgtask_net_t **self_p)
     if (*self_p) {
         zgtask_net_t *self = *self_p;
 
-        //  TODO: Free class properties
         zyre_destroy (&self->zyre);
 
         //  Free object itself
@@ -63,12 +61,23 @@ zgtask_net_destroy (zgtask_net_t **self_p)
 
 
 //  --------------------------------------------------------------------------
+//  Return zyre object
+
+zyre_t *
+zgtask_net_get_zyre (zgtask_net_t *self)
+{
+    assert (self);
+    return self->zyre;
+}
+
+//  --------------------------------------------------------------------------
 //  Print properties of the zgtask_net object.
 
 void
 zgtask_net_print (zgtask_net_t *self)
 {
     assert (self);
+    zyre_print (self->zyre);
 }
 
 

@@ -125,7 +125,7 @@ zgtask_tree_get_name (zgtask_tree_t *self)
 zgtask_net_t *
 zgtask_tree_get_net (zgtask_tree_t *self)
 {
-	assert (self);
+    assert (self);
     return (zgtask_net_t *) zhashx_lookup (self->hash, "net");
 }
 
@@ -135,7 +135,7 @@ zgtask_tree_get_net (zgtask_tree_t *self)
 zgtask_task_t *
 zgtask_tree_get_task (zgtask_tree_t *self)
 {
-	assert (self);
+    assert (self);
     return (zgtask_task_t *) zhashx_lookup (self->hash, "task");
 }
 

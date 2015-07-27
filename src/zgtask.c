@@ -1,18 +1,14 @@
 #include "../include/zgtask.h"
 
-int
-main (int argc, char **argv)
+void
+testZyre (const char *name, bool isBind)
 {
 
-    if (argc < 1)
-        return 1;
-
-    zyre_t *zyre = zyre_new (argv [1]);
-
-    if (argc > 2)
-        zyre_gossip_connect (zyre, "tcp://147.213.192.236:12345");
+    zyre_t *zyre = zyre_new (name);
+    if (isBind)
+        zyre_gossip_bind (zyre, "tcp://127.0.0.1:12345");
     else
-        zyre_gossip_bind (zyre, "tcp://147.213.192.236:12345");
+        zyre_gossip_connect (zyre, "tcp://127.0.0.1:12345");
 
     zyre_start (zyre);
 
@@ -41,5 +37,17 @@ main (int argc, char **argv)
     zyre_stop (zyre);
 
     zyre_destroy (&zyre);
+}
+
+int
+main (int argc, char **argv)
+{
+
+    if (argc < 1)
+        return 1;
+
+    testZyre (argv [1], argc > 2);
+
+
     return 0;
 }
