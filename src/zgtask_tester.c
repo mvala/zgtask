@@ -10,9 +10,10 @@ testTree ()
 	//  Create testing tree structure
     zgtask_tree_t *tree0 = zgtask_tree_new ("t0", 0);
     zgtask_task_t *task = zgtask_tree_get_task (tree0);
-    zgtask_task_set_command (task, "numcal --seed %ID%");
-    zgtask_task_set_min_max (task, 0, 100);
-
+    if (task) {
+    	zgtask_task_set_command (task, "numcal --seed %ID%");
+    	zgtask_task_set_min_max (task, 0, 100);
+    }
     zgtask_tree_t *tree10 = zgtask_tree_add_child (tree0, "t10");
 
     zgtask_tree_t *tree11 = zgtask_tree_add_child (tree10, "t11");

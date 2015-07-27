@@ -44,7 +44,7 @@ zgtask_tree_new (char *name, zgtask_tree_t *parent)
     // Initialize properties
     self->name = strdup (name);
     self->hash = zhashx_new ();
-    zhashx_insert(self->hash, "task", zgtask_task_new (""));
+//    zhashx_insert(self->hash, "task", zgtask_task_new (""));
     self->parent = parent;
     self->child = 0;
     self->brother = 0;
@@ -376,7 +376,13 @@ zgtask_tree_print (zgtask_tree_t *self)
         p = (zgtask_tree_t *) zgtask_tree_get_parent (p);
     }
     printf ("name=%s ", self->name);
-    zgtask_task_print (zgtask_tree_get_task(self));
+    zgtask_task_t *task = zgtask_tree_get_task(self);
+    if (task)
+    	zgtask_task_print (task);
+    else
+    	printf ("\n");
+
+    //  Printf child and brother
     if (self->child) zgtask_tree_print (self->child);
     if (self->brother) zgtask_tree_print (self->brother);
 }
