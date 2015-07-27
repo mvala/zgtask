@@ -119,6 +119,15 @@ zgtask_tree_get_name (zgtask_tree_t *self)
     return self->name;
 }
 
+//  --------------------------------------------------------------------------
+//  Returns net object
+
+zgtask_net_t *
+zgtask_tree_get_net (zgtask_tree_t *self)
+{
+	assert (self);
+    return (zgtask_net_t *) zhashx_lookup (self->hash, "net");
+}
 
 //  --------------------------------------------------------------------------
 //  Return task object
@@ -126,6 +135,7 @@ zgtask_tree_get_name (zgtask_tree_t *self)
 zgtask_task_t *
 zgtask_tree_get_task (zgtask_tree_t *self)
 {
+	assert (self);
     return (zgtask_task_t *) zhashx_lookup (self->hash, "task");
 }
 
@@ -159,8 +169,36 @@ zgtask_tree_get_parent (zgtask_tree_t *self)
     return self->parent;
 }
 
+
 //  --------------------------------------------------------------------------
-//  Add task
+//  Add net object
+
+zgtask_net_t *
+zgtask_tree_add_net (zgtask_tree_t *self, const char *format, ...)
+{
+    assert (self);
+    assert (format);
+
+    va_list argptr;
+    va_start (argptr, format);
+    char *name = zsys_vprintf (format, argptr);
+    if (!name)
+        return 0;
+
+    va_end (argptr);
+
+    zgtask_net_t *net = zgtask_tree_get_net (self);
+    if (!net) {
+        net = zgtask_net_new (name);
+        zhashx_insert (self->hash, "net", net);
+    }
+    free (name);
+
+    return net;
+}
+
+//  --------------------------------------------------------------------------
+//  Add task object
 
 zgtask_task_t *
 zgtask_tree_add_task (zgtask_tree_t *self, const char *format, ...)
@@ -176,8 +214,8 @@ zgtask_tree_add_task (zgtask_tree_t *self, const char *format, ...)
 
     va_end (argptr);
 
-    zgtask_task_t *task = NULL;
-    if (!zgtask_tree_get_task (self)) {
+    zgtask_task_t *task = zgtask_tree_get_task (self);
+    if (!task) {
         task = zgtask_task_new (name);
         zhashx_insert (self->hash, "task", task);
     }
