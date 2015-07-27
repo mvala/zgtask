@@ -52,6 +52,10 @@ ZGTASK_EXPORT zgtask_tree_t *
 ZGTASK_EXPORT zgtask_tree_t *
     zgtask_tree_get_parent (zgtask_tree_t *self);
 
+//  Add task
+ZGTASK_EXPORT zgtask_task_t *
+    zgtask_tree_add_task (zgtask_tree_t *self, const char *format, ...);
+
 //  Add child
 ZGTASK_EXPORT zgtask_tree_t *
     zgtask_tree_add_child (zgtask_tree_t *self, const char *format, ...);

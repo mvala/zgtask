@@ -9,11 +9,14 @@ testTree ()
 {
 	//  Create testing tree structure
     zgtask_tree_t *tree0 = zgtask_tree_new ("t0", 0);
+
+    //  Adding task
+    zgtask_tree_add_task(tree0, "numcal --seed %ID%");
+
     zgtask_task_t *task = zgtask_tree_get_task (tree0);
-    if (task) {
-    	zgtask_task_set_command (task, "numcal --seed %ID%");
+    if (task)
     	zgtask_task_set_min_max (task, 0, 100);
-    }
+
     zgtask_tree_t *tree10 = zgtask_tree_add_child (tree0, "t10");
 
     zgtask_tree_t *tree11 = zgtask_tree_add_child (tree10, "t11");
@@ -46,8 +49,9 @@ testJobs (int min, int max)
 {
 	//  Creare initial tree structure
     zgtask_tree_t *c = zgtask_tree_new ("t", 0);
-    zgtask_task_t *task = zgtask_tree_get_task (c);
-    zgtask_task_set_command (task, "numcal --seed %ID%");
+
+    //  Adding task
+    zgtask_tree_add_task(c, "numcal --seed %ID%");
 
     //  Generate tree structure
     zgtask_tree_generate (c, min, max);
@@ -74,9 +78,11 @@ testJobs2 (int min, int max)
     zgtask_tree_t *ca = zgtask_tree_add_child (client, "ClusterA");
     zgtask_tree_t *cb = zgtask_tree_add_brother (ca, "ClusterB");
 
-    zgtask_task_t *task;
-    task = zgtask_tree_get_task (client);
-    zgtask_task_set_command (task, "numcal --seed %ID%");
+    char *cmd = strdup("numcal --seed %ID%");
+    //  Adding task
+    zgtask_tree_add_task(client, cmd);
+    zgtask_tree_add_task(ca, cmd);
+    zgtask_tree_add_task(cb, cmd);
 
     //  Generate tree structure
     zgtask_tree_generate (ca, min, max);
@@ -96,6 +102,8 @@ testJobs2 (int min, int max)
 
     //  Prints client tree
     zgtask_tree_print (client);
+
+    free (cmd);
 
     return client;
 }

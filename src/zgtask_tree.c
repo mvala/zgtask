@@ -44,7 +44,6 @@ zgtask_tree_new (char *name, zgtask_tree_t *parent)
     // Initialize properties
     self->name = strdup (name);
     self->hash = zhashx_new ();
-//    zhashx_insert(self->hash, "task", zgtask_task_new (""));
     self->parent = parent;
     self->child = 0;
     self->brother = 0;
@@ -161,6 +160,33 @@ zgtask_tree_get_parent (zgtask_tree_t *self)
 }
 
 //  --------------------------------------------------------------------------
+//  Add task
+
+zgtask_task_t *
+zgtask_tree_add_task (zgtask_tree_t *self, const char *format, ...)
+{
+	assert (self);
+    assert (format);
+
+    va_list argptr;
+    va_start (argptr, format);
+    char *name = zsys_vprintf (format, argptr);
+    if (!name)
+        return 0;
+
+    va_end (argptr);
+
+    zgtask_task_t *task = NULL;
+    if (!zgtask_tree_get_task(self)) {
+    	task = zgtask_task_new (name);
+    	zhashx_insert(self->hash, "task", task);
+    }
+    free (name);
+
+    return task;
+}
+
+//  --------------------------------------------------------------------------
 //  Add child
 
 zgtask_tree_t *
@@ -244,6 +270,7 @@ zgtask_tree_generate (zgtask_tree_t *self, int min, int max)
     uint n = 0;
     zgtask_task_t *task = zgtask_tree_get_task (self);
     zgtask_tree_t *t = zgtask_tree_add_child (self, "t%d", min);
+    zgtask_tree_add_task(t, zgtask_task_get_command(task));
     zgtask_task_t *subtask = zgtask_tree_get_task (t);
     zgtask_task_set_command (subtask, zgtask_task_get_command (task));
     zgtask_task_set_min_max (subtask, min, min);
@@ -252,6 +279,7 @@ zgtask_tree_generate (zgtask_tree_t *self, int min, int max)
     int i;
     for (i = min+1; i <= max; i++) {
         t = zgtask_tree_add_brother (t, "t%d", i);
+        zgtask_tree_add_task(t, zgtask_task_get_command(task));
         zgtask_task_t *subtask = zgtask_tree_get_task (t);
         zgtask_task_set_command (subtask, zgtask_task_get_command (task));
         zgtask_task_set_min_max (subtask, i, i);
@@ -295,16 +323,24 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
         if (!json_is_string (js_name)) {
             fprintf (stderr, "error: commit %d: name is not a string\n", i + 1);
             json_decref (json);
-            return 1;
+            return 2;
         }
         if (!i)
             tree = zgtask_tree_add_child (tree, json_string_value (js_name));
         else tree = zgtask_tree_add_brother (tree, json_string_value (js_name));
 
-        task = zgtask_tree_get_task (tree);
-        if (task)
-        	zgtask_task_import_json (zgtask_tree_get_task (tree), js_data);
+        json_t *js_task =  json_object_get (json, "task");
+        if (js_task) {
 
+        	if (!json_is_object (js_task)) {
+        		fprintf (stderr, "error: task is not a object\n");
+        		json_decref (json);
+        		return 3;
+        	}
+        	task = zgtask_tree_add_task (tree,"");
+        	if (task)
+        	zgtask_task_import_json (zgtask_tree_get_task (tree), js_data);
+        }
         zgtask_tree_import_json (tree, js_data);
 
     }
