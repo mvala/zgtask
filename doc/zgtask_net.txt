@@ -1,0 +1,43 @@
+zgtask_net(3)
+=============
+
+NAME
+----
+zgtask_net - Zgtask network object
+
+SYNOPSIS
+--------
+----
+//  Create a new zgtask_net
+ZGTASK_EXPORT zgtask_net_t *
+    zgtask_net_new (void);
+
+//  Destroy the zgtask_net
+ZGTASK_EXPORT void
+    zgtask_net_destroy (zgtask_net_t **self_p);
+
+//  Print properties of object
+ZGTASK_EXPORT void
+    zgtask_net_print (zgtask_net_t *self);
+
+//  Self test of this class
+ZGTASK_EXPORT void
+    zgtask_net_test (bool verbose);
+----
+
+DESCRIPTION
+-----------
+
+zgtask_net - Zgtask network object
+
+Please add @discuss section in ../src/zgtask_net.c.
+
+EXAMPLE
+-------
+.From zgtask_net_test method
+----
+//  Simple create/destroy test
+zgtask_net_t *self = zgtask_net_new ();
+assert (self);
+zgtask_net_destroy (&self);
+----

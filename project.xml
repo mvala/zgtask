@@ -47,8 +47,7 @@
     <use project = "zyre" min_major= "1" min_minor = "1" min_patch = "0" />
     -->
     <use project = "zyre" min_major= "1" min_minor = "1" min_patch = "0" />
- 	<use project = "jansson" repository = "https://github.com/akheron/jansson"
-        test = "json_object" />
+ 	<use project = "jansson"/>
     
     <!-- Header Files
          name := The name the header file to include without file ending
@@ -62,7 +61,8 @@
     <class name = "myclass">Public class description</class>
     <class name = "someother" private = "1">Private class description</class>
     -->
-	<class name = "zgtask_task">Task infozgtask</class>
+	<class name = "zgtask_task">Task info zgtask</class>
+	<class name = "zgtask_net">Zgtask network object</class>
     <class name = "zgtask_tree">Tree object</class>
     <!--
         Actors, are build using the simple actor framework from czmq. If the

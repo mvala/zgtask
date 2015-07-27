@@ -10,7 +10,7 @@ INCDIR=-I$(PREFIX)/include -I.
 LIBDIR=-L$(PREFIX)/lib
 CFLAGS=-Wall -Os -g -DLIBZGTASK_EXPORTS $(INCDIR)
 
-OBJS = zgtask_task.o zgtask_tree.o
+OBJS = zgtask_task.o zgtask_net.o zgtask_tree.o
 %.o: ../../src/%.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
