@@ -7,15 +7,15 @@
 zgtask_tree_t *
 testTree ()
 {
-	//  Create testing tree structure
+    //  Create testing tree structure
     zgtask_tree_t *tree0 = zgtask_tree_new ("t0", 0);
 
     //  Adding task
-    zgtask_tree_add_task(tree0, "numcal --seed %ID%");
+    zgtask_tree_add_task (tree0, "numcal --seed %ID%");
 
     zgtask_task_t *task = zgtask_tree_get_task (tree0);
     if (task)
-    	zgtask_task_set_min_max (task, 0, 100);
+        zgtask_task_set_min_max (task, 0, 100);
 
     zgtask_tree_t *tree10 = zgtask_tree_add_child (tree0, "t10");
 
@@ -47,11 +47,11 @@ testTree ()
 zgtask_tree_t *
 testJobs (int min, int max)
 {
-	//  Creare initial tree structure
+    //  Creare initial tree structure
     zgtask_tree_t *c = zgtask_tree_new ("t", 0);
 
     //  Adding task
-    zgtask_tree_add_task(c, "numcal --seed %ID%");
+    zgtask_tree_add_task (c, "numcal --seed %ID%");
 
     //  Generate tree structure
     zgtask_tree_generate (c, min, max);
@@ -73,16 +73,16 @@ testJobs (int min, int max)
 zgtask_tree_t *
 testJobs2 (int min, int max)
 {
-	//  Creare initial tree structure
+    //  Creare initial tree structure
     zgtask_tree_t *client = zgtask_tree_new ("client", 0);
     zgtask_tree_t *ca = zgtask_tree_add_child (client, "ClusterA");
     zgtask_tree_t *cb = zgtask_tree_add_brother (ca, "ClusterB");
 
-    char *cmd = strdup("numcal --seed %ID%");
+    char *cmd = strdup ("numcal --seed %ID%");
     //  Adding task
-    zgtask_tree_add_task(client, cmd);
-    zgtask_tree_add_task(ca, cmd);
-    zgtask_tree_add_task(cb, cmd);
+    zgtask_tree_add_task (client, cmd);
+    zgtask_tree_add_task (ca, cmd);
+    zgtask_tree_add_task (cb, cmd);
 
     //  Generate tree structure
     zgtask_tree_generate (ca, min, max);
@@ -125,8 +125,8 @@ testJsonExport (int min, int max)
 zgtask_tree_t *
 testJsonImport (int min, int max)
 {
-	zgtask_tree_t *t = NULL;
-	//  Generate input json file, if doesn't exist
+    zgtask_tree_t *t = NULL;
+    //  Generate input json file, if doesn't exist
     if (!zsys_file_exists (JSON_FILENAME))
         t = testJsonExport (min, max);
 
@@ -142,7 +142,7 @@ testJsonImport (int min, int max)
         zgtask_tree_import_json (json_import, json);
 
     //  Cleaning json
-    json_decref(json);
+    json_decref (json);
 
     //  Prints json imported tree
     zgtask_tree_print (json_import);

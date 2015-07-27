@@ -1,13 +1,13 @@
 /*  =========================================================================
     zgtask_net - Zgtask network object
 
-    Copyright (c) the Contributors as noted in the AUTHORS file.       
-    This file is part of CZMQ, the high-level C binding for 0MQ:       
-    http://czmq.zeromq.org.                                            
-                                                                       
+    Copyright (c) the Contributors as noted in the AUTHORS file.
+    This file is part of CZMQ, the high-level C binding for 0MQ:
+    http://czmq.zeromq.org.
+
     This Source Code Form is subject to the terms of the Mozilla Public
     License, v. 2.0. If a copy of the MPL was not distributed with this
-    file, You can obtain one at http://mozilla.org/MPL/2.0/.           
+    file, You can obtain one at http://mozilla.org/MPL/2.0/.
     =========================================================================
 */
 
@@ -37,7 +37,7 @@ zgtask_net_new (const char *name)
     assert (self);
 
     //  TODO: Initialize properties
-    self->zyre = zyre_new(name);
+    self->zyre = zyre_new (name);
 
     return self;
 }
@@ -53,7 +53,7 @@ zgtask_net_destroy (zgtask_net_t **self_p)
         zgtask_net_t *self = *self_p;
 
         //  TODO: Free class properties
-        zyre_destroy(&self->zyre);
+        zyre_destroy (&self->zyre);
 
         //  Free object itself
         free (self);

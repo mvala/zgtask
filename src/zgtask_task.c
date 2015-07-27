@@ -228,7 +228,7 @@ zgtask_task_import_json (zgtask_task_t *self, json_t *json)
 
 
     js_tmp = json_object_get (js_task, "cmd");
-    zgtask_task_set_command (self, (char*)json_string_value (js_tmp));
+    zgtask_task_set_command (self, (char *) json_string_value (js_tmp));
     js_tmp = json_object_get (js_task, "status");
     zgtask_task_set_status (self,  json_integer_value (js_tmp));
     js_tmp = json_object_get (js_task, "min");
