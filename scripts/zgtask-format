@@ -7,8 +7,6 @@ for f in $(find . \( -name "zgtask*.c" ! -name "*_selftest.c" \) -exec readlink 
     uncrustify -c uncrustify.cfg $f --no-backup
 done
 
-for f in $(find . \( -name "zgtask*.h" ! -name "*_classes.h" ! -name "*_library.h" \) -exec readlink -f {} \;);do
-    uncrustify -c uncrustify.cfg $f --no-backup
-done
-#uncrustify -c uncrustify.cfg include/zgtask*.h --no-backup
-#uncrustify -c uncrustify.cfg src/zgtask*.h --no-backup
+#for f in $(find . \( -name "zgtask*.h" ! -name "*_classes.h" ! -name "*_library.h" \) -exec readlink -f {} \;);do
+#    uncrustify -c uncrustify.cfg $f --no-backup
+#done
