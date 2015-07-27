@@ -116,9 +116,10 @@ testJsonExport (int min, int max)
 zgtask_tree_t *
 testJsonImport (int min, int max)
 {
+	zgtask_tree_t *t = NULL;
 	//  Generate input json file, if doesn't exist
     if (!zsys_file_exists (JSON_FILENAME))
-        testJsonExport (min, max);
+        t = testJsonExport (min, max);
 
     //  Create new tree
     zgtask_tree_t *json_import = zgtask_tree_new ("json_import", 0);
@@ -136,6 +137,10 @@ testJsonImport (int min, int max)
 
     //  Prints json imported tree
     zgtask_tree_print (json_import);
+
+    //  Cleaning exported tree
+    if (t)
+        zgtask_tree_destroy (&t);
 
     return json_import;
 }

@@ -24,7 +24,7 @@
 
 struct _zgtask_tree_t {
     char *name;
-    zgtask_task_t *task;
+    zhashx_t *hash;
     zgtask_tree_t *parent;
     zgtask_tree_t *child;
     zgtask_tree_t *brother;
@@ -43,7 +43,8 @@ zgtask_tree_new (char *name, zgtask_tree_t *parent)
 
     // Initialize properties
     self->name = strdup (name);
-    self->task = zgtask_task_new ("");
+    self->hash = zhashx_new ();
+    zhashx_insert(self->hash, "task", zgtask_task_new (""));
     self->parent = parent;
     self->child = 0;
     self->brother = 0;
@@ -63,9 +64,17 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
 
         // Free class properties
         free (self->name);
-        zgtask_task_destroy (&self->task);
+
         zgtask_tree_destroy (&self->child);
         zgtask_tree_destroy (&self->brother);
+
+        // Cleaning task
+        zgtask_task_t *task = zgtask_tree_get_task(self);
+        if (task) {
+            zgtask_task_destroy (&task);
+            zhashx_delete(self->hash, "task");
+        }
+        zhashx_destroy(&self->hash);
 
         //  Free object itself
         free (self);
@@ -118,7 +127,7 @@ zgtask_tree_get_name (zgtask_tree_t *self)
 zgtask_task_t *
 zgtask_tree_get_task (zgtask_tree_t *self)
 {
-    return self->task;
+    return (zgtask_task_t *) zhashx_lookup(self->hash, "task");
 }
 
 //  --------------------------------------------------------------------------
@@ -268,6 +277,7 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
     assert (json);
 
     zgtask_tree_t *tree = self;
+    zgtask_task_t *task;
     json_t *js_data;
     json_t *js_name;
     json_t *array = json_object_get (json, "array");
@@ -290,7 +300,10 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
         if (!i)
             tree = zgtask_tree_add_child (tree, json_string_value (js_name));
         else tree = zgtask_tree_add_brother (tree, json_string_value (js_name));
-        zgtask_task_import_json (zgtask_tree_get_task (tree), js_data);
+
+        task = zgtask_tree_get_task (tree);
+        if (task)
+        	zgtask_task_import_json (zgtask_tree_get_task (tree), js_data);
 
         zgtask_tree_import_json (tree, js_data);
 
@@ -323,7 +336,8 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
     json_t *obj_task = json_object ();
     json_object_set_new (obj_array, "task", obj_task);
     zgtask_task_t *task = zgtask_tree_get_task (self);
-    zgtask_task_export_json (task, obj_task);
+    if (task)
+    	zgtask_task_export_json (task, obj_task);
 
     if (self->brother)
         zgtask_tree_export_json (self->brother, 0, array);
@@ -362,7 +376,7 @@ zgtask_tree_print (zgtask_tree_t *self)
         p = (zgtask_tree_t *) zgtask_tree_get_parent (p);
     }
     printf ("name=%s ", self->name);
-    zgtask_task_print (self->task);
+    zgtask_task_print (zgtask_tree_get_task(self));
     if (self->child) zgtask_tree_print (self->child);
     if (self->brother) zgtask_tree_print (self->brother);
 }
