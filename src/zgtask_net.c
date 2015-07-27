@@ -23,7 +23,8 @@
 //  Structure of our class
 
 struct _zgtask_net_t {
-    zyre_t *zyre;
+    zyre_t *parent;
+    zyre_t *child;
 };
 
 
@@ -36,7 +37,8 @@ zgtask_net_new (const char *name)
     zgtask_net_t *self = (zgtask_net_t *) zmalloc (sizeof (zgtask_net_t));
     assert (self);
 
-    self->zyre = zyre_new (name);
+    self->parent = NULL;
+    self->child = NULL;
 
     return self;
 }
@@ -51,8 +53,18 @@ zgtask_net_destroy (zgtask_net_t **self_p)
     if (*self_p) {
         zgtask_net_t *self = *self_p;
 
-        zyre_destroy (&self->zyre);
+        //  Cleaning parent
+        if (self->parent) {
+            zyre_stop (self->parent);
+            zyre_destroy (&self->parent);
+        }
 
+        //  Cleaning child
+        if (self->child) {
+            zyre_stop (self->child);
+            zyre_destroy (&self->child);
+
+        }
         //  Free object itself
         free (self);
         *self_p = NULL;
@@ -61,13 +73,48 @@ zgtask_net_destroy (zgtask_net_t **self_p)
 
 
 //  --------------------------------------------------------------------------
-//  Return zyre object
+//  Init zyre parent object
 
 zyre_t *
-zgtask_net_get_zyre (zgtask_net_t *self)
+zgtask_net_init_zyre_parent (zgtask_net_t *self)
 {
     assert (self);
-    return self->zyre;
+    if (!self->parent)
+        self->parent = zyre_new ("parent");
+    return self->parent;
+}
+
+//  --------------------------------------------------------------------------
+//  Init zyre child object
+
+zyre_t *
+zgtask_net_init_zyre_child (zgtask_net_t *self)
+{
+    assert (self);
+    if (!self->child)
+        self->child = zyre_new ("child");
+    return self->child;
+}
+
+
+//  --------------------------------------------------------------------------
+//  Return zyre parent object
+
+zyre_t *
+zgtask_net_get_zyre_parent (zgtask_net_t *self)
+{
+    assert (self);
+    return self->parent;
+}
+
+//  --------------------------------------------------------------------------
+//  Return zyre child object
+
+zyre_t *
+zgtask_net_get_zyre_child (zgtask_net_t *self)
+{
+    assert (self);
+    return self->child;
 }
 
 //  --------------------------------------------------------------------------
@@ -77,7 +124,10 @@ void
 zgtask_net_print (zgtask_net_t *self)
 {
     assert (self);
-    zyre_print (self->zyre);
+    if (self->parent)
+        zyre_print (self->parent);
+    if (self->child)
+        zyre_print (self->child);
 }
 
 

@@ -28,9 +28,21 @@ ZGTASK_EXPORT zgtask_net_t *
 ZGTASK_EXPORT void
     zgtask_net_destroy (zgtask_net_t **self_p);
 
-//  Return zyre object
+//  Init zyre parent object
 ZGTASK_EXPORT zyre_t *
-    zgtask_net_get_zyre (zgtask_net_t *self);
+    zgtask_net_init_zyre_parent (zgtask_net_t *self);
+
+//  Init zyre child object
+ZGTASK_EXPORT zyre_t *
+    zgtask_net_init_zyre_child (zgtask_net_t *self);
+
+//  Return zyre parent object
+ZGTASK_EXPORT zyre_t *
+    zgtask_net_get_zyre_parent (zgtask_net_t *self);
+
+//  Return zyre child object
+ZGTASK_EXPORT zyre_t *
+    zgtask_net_get_zyre_child (zgtask_net_t *self);
 
 //  Print properties of object
 ZGTASK_EXPORT void

@@ -67,12 +67,21 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
         zgtask_tree_destroy (&self->child);
         zgtask_tree_destroy (&self->brother);
 
+        // Cleaning net
+        zgtask_net_t *net = zgtask_tree_get_net (self);
+        if (net) {
+            zgtask_net_destroy (&net);
+            zhashx_delete (self->hash, "net");
+        }
+
         // Cleaning task
         zgtask_task_t *task = zgtask_tree_get_task (self);
         if (task) {
             zgtask_task_destroy (&task);
             zhashx_delete (self->hash, "task");
         }
+
+        //  Destroying hash table
         zhashx_destroy (&self->hash);
 
         //  Free object itself
@@ -449,12 +458,17 @@ zgtask_tree_print (zgtask_tree_t *self)
         if (p) printf (" ");
         p = (zgtask_tree_t *) zgtask_tree_get_parent (p);
     }
-    printf ("name=%s ", self->name);
+    printf ("name=%s\n", self->name);
     zgtask_task_t *task = zgtask_tree_get_task (self);
     if (task)
         zgtask_task_print (task);
     else
         printf ("\n");
+
+    zgtask_net_t *net = zgtask_tree_get_net (self);
+    if (net)
+        zgtask_net_print (net);
+
 
     //  Printf child and brother
     if (self->child) zgtask_tree_print (self->child);
