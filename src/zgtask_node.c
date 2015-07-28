@@ -189,6 +189,8 @@ zgtask_node_print (zgtask_node_t *self)
     if (zyre_parent)
         zyre_print (zyre_parent);
 
+    zclock_sleep(10);
+
     zyre_t *zyre_child = zgtask_net_get_zyre_child (self->net);
     if (zyre_child)
         zyre_print (zyre_child);
