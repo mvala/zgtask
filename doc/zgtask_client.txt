@@ -1,0 +1,43 @@
+zgtask_client(3)
+================
+
+NAME
+----
+zgtask_client - Zgtask client object
+
+SYNOPSIS
+--------
+----
+//  Create a new zgtask_client
+ZGTASK_EXPORT zgtask_client_t *
+    zgtask_client_new (void);
+
+//  Destroy the zgtask_client
+ZGTASK_EXPORT void
+    zgtask_client_destroy (zgtask_client_t **self_p);
+
+//  Print properties of object
+ZGTASK_EXPORT void
+    zgtask_client_print (zgtask_client_t *self);
+
+//  Self test of this class
+ZGTASK_EXPORT void
+    zgtask_client_test (bool verbose);
+----
+
+DESCRIPTION
+-----------
+
+zgtask_client - Zgtask client object
+
+Please add @discuss section in ../src/zgtask_client.c.
+
+EXAMPLE
+-------
+.From zgtask_client_test method
+----
+//  Simple create/destroy test
+zgtask_client_t *self = zgtask_client_new (name);
+assert (self);
+zgtask_client_destroy (&self);
+----

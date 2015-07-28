@@ -1,0 +1,31 @@
+#### zgtask_node - Zgtask node object
+
+zgtask_node - Zgtask node object
+
+Please add @discuss section in ../src/zgtask_node.c.
+
+This is the class interface:
+
+    //  Create a new zgtask_node
+    ZGTASK_EXPORT zgtask_node_t *
+        zgtask_node_new (void);
+    
+    //  Destroy the zgtask_node
+    ZGTASK_EXPORT void
+        zgtask_node_destroy (zgtask_node_t **self_p);
+    
+    //  Print properties of object
+    ZGTASK_EXPORT void
+        zgtask_node_print (zgtask_node_t *self);
+    
+    //  Self test of this class
+    ZGTASK_EXPORT void
+        zgtask_node_test (bool verbose);
+
+This is the class self test code:
+
+    //  Simple create/destroy test
+    zgtask_node_t *self = zgtask_node_new ();
+    assert (self);
+    zgtask_node_destroy (&self);
+
