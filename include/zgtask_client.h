@@ -22,11 +22,23 @@ extern "C" {
 //  @interface
 //  Create a new zgtask_client
 ZGTASK_EXPORT zgtask_client_t *
-    zgtask_client_new (const char *name);
+    zgtask_client_new (char *name, const char *url_parent);
 
 //  Destroy the zgtask_client
 ZGTASK_EXPORT void
     zgtask_client_destroy (zgtask_client_t **self_p);
+
+//  Starts client
+ZGTASK_EXPORT void
+    zgtask_client_start (zgtask_client_t *self);
+
+//  Main loop
+ZGTASK_EXPORT void
+    zgtask_client_loop (zgtask_client_t *self);
+
+//  Stops client
+ZGTASK_EXPORT void
+    zgtask_client_stop (zgtask_client_t *self);
 
 //  Print properties of object
 ZGTASK_EXPORT void

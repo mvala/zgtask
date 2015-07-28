@@ -1,124 +1,91 @@
 #include "../include/zgtask.h"
 
 void
-testZyre (int argc, char **argv)
+usage ()
 {
-
-    char *name = NULL;
-    if (argc < 2)
-        name = strdup ("zgtask_default");
-    else
-        name = strdup (argv [1]);
-
-    zyre_t *zyre = zyre_new (name);
-
-    if (argc > 2)
-        zyre_gossip_bind (zyre, "tcp://127.0.0.1:12345");
-    else
-        zyre_gossip_connect (zyre, "tcp://127.0.0.1:12345");
-
-    zyre_start (zyre);
-
-    zyre_join (zyre, "GLOBAL");
-    zyre_print (zyre);
+    fprintf (stderr, "usage:\n");
+    fprintf (stderr, "\tzgtask --client <name> <url>\n");
+    fprintf (stderr, "\tzgtask --node <name> <url parent> <url child>\n");
+    fprintf (stderr, "\nexample:\n");
+    fprintf (stderr, "\tzgtask --client client tcp://127.0.0.1:12345\n");
+    fprintf (stderr,
+             "\tzgtask --node node1 tcp://127.0.0.1:12345 tpc://127.0.0.1:12346\n");
 
 
-    zyre_event_t *zyre_event = zyre_event_new (zyre);
-    zyre_event_print (zyre_event);
-    zyre_event_destroy (&zyre_event);
-
-    zyre_event = zyre_event_new (zyre);
-    zyre_event_print (zyre_event);
-    zyre_event_destroy (&zyre_event);
-
-    // One node shouts to GLOBAL
-    zmsg_t *msg = zmsg_new ();
-    zmsg_addstr (msg, "Hello, World");
-    zyre_shout (zyre, "GLOBAL", &msg);
-
-    zyre_event = zyre_event_new (zyre);
-    zyre_event_print (zyre_event);
-    zyre_event_destroy (&zyre_event);
-
-
-    zyre_stop (zyre);
-
-    zyre_destroy (&zyre);
-
-    free (name);
+    exit (EXIT_FAILURE);
 }
 
 int
 main (int argc, char **argv)
 {
 
-    if (argc < 4) {
-        printf ("./%s <name> <parent> <child> \"<msg>\"\n", argv [0]);
-        printf ("./%s t tcp://127.0.0.1:12345 tcp://127.0.0.1:12345 \n", argv [0]);
-        exit (1);
+    int i;
+    char *name_cli = NULL;
+    char *name_node = NULL;
+    char *url_cli_parent = NULL;
+    char *url_node_parent = NULL;
+    char *url_node_child = NULL;
+    for (i = 1; i < argc; i++)
+    {
+        if (strcmp (argv [i], "--client") == 0) {
+            if (i + 2 <= argc - 1) {
+                i++;
+                name_cli = strdup (argv [i]);
+                i++;
+                url_cli_parent = strdup (argv [i]);
+            }
+            else
+                usage ();
+        }
+        else
+        if (strcmp (argv [i], "--node") == 0) {
+            if (i + 3 <= argc - 1) {
+                i++;
+                name_node = strdup (argv [i]);
+                i++;
+                url_node_parent = strdup (argv [i]);
+                i++;
+                url_node_child = strdup (argv [i]);
+            }
+            else
+                usage ();
+        }
     }
 
-    //  Create testing tree structure
-    zgtask_tree_t *t = zgtask_tree_new (argv [1], 0);
 
-    zgtask_net_t *n = zgtask_tree_add_net (t, "%s_net", argv [1]);
-    zyre_t *t_p = NULL;
-    zyre_t *t_ch = NULL;
+    if (!name_cli && !name_node)
+        usage ();
 
-
-    if (strcmp (argv [2], "-1")) {
-//    	printf("2=%s\n", argv[2]);
-    	t_p = zgtask_net_init_zyre_parent (n);
-        zyre_gossip_bind (t_p, argv [2]);
-        zyre_start (t_p);
-        zyre_join(t_p,"GLOBAL");
-    }
-    if (strcmp (argv [3], "-1")) {
-//    	printf("3=%s\n", argv[3]);
-    	t_ch = zgtask_net_init_zyre_child (n);
-        zyre_gossip_connect (t_ch, argv [3]);
-        zyre_start (t_ch);
-        zyre_join(t_ch,"GLOBAL");
+    if (name_cli) {
+        printf ("Creating client '%s' and connecting to '%s' \n", name_cli,
+                url_cli_parent);
+        zgtask_client_t *client = zgtask_client_new (name_cli, url_cli_parent);
+        zgtask_client_start (client);
+        zgtask_client_print (client);
+        zgtask_client_loop (client);
+        zgtask_client_stop (client);
+        zgtask_client_destroy (&client);
     }
 
-    zclock_sleep(250);
+    if (name_node) {
+        printf ("Creating node '%s' with parent='%s' and child='%s'\n", name_node,
+                url_node_parent, url_node_child);
 
-    zgtask_tree_print (t);
+        zgtask_node_t *node =
+            zgtask_node_new (name_node, url_node_parent, url_node_child);
+        zgtask_node_start (node);
+        zgtask_node_print (node);
+        zgtask_node_loop (node);
+        zgtask_node_stop (node);
+        zgtask_node_destroy (&node);
 
-    zmsg_t *msg = NULL;
-//    printf ("ssss=%d %s\n",argc, argv [4]);
-    zyre_event_t *zyre_event = NULL;
-    if (argc == 5) {
-    	msg = zmsg_new();
-    	zmsg_addstr(msg, argv [4]);
-    	zyre_shout(t_ch, "GLOBAL", &msg);
-    }
-    else {
-    	while (!zsys_interrupted) {
-    		zyre_event = zyre_event_new(t_p);
-    		if (!zyre_event) {
-        		zyre_event_destroy(&zyre_event);
-    			break;
-
-    		}
-    		zyre_event_print(zyre_event);
-    		zyre_event_destroy(&zyre_event);
-
-    	}
     }
 
-    if (t_p) {
-    	zyre_leave(t_p, "GLOBAL");
-//    	zyre_stop (t_p);
-    }
+    free (name_cli);
+    free (name_node);
+    free (url_cli_parent);
+    free (url_node_parent);
+    free (url_node_child);
 
-    if (t_ch) {
-    	zyre_leave(t_ch, "GLOBAL");
-//    	zyre_stop (t_ch);
-    }
-
-    //  Cleaning tree
-    zgtask_tree_destroy (&t);
-
-    return 0;
+    return EXIT_SUCCESS;
 }

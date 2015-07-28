@@ -22,11 +22,23 @@ extern "C" {
 //  @interface
 //  Create a new zgtask_node
 ZGTASK_EXPORT zgtask_node_t *
-    zgtask_node_new (const char *name);
+    zgtask_node_new (char *name, const char *url_parent, const char *url_child);
 
 //  Destroy the zgtask_node
 ZGTASK_EXPORT void
     zgtask_node_destroy (zgtask_node_t **self_p);
+
+//  Starts node
+ZGTASK_EXPORT void
+    zgtask_node_start (zgtask_node_t *self);
+
+//  Main loop
+ZGTASK_EXPORT void
+    zgtask_node_loop (zgtask_node_t *self);
+
+//  Stops node
+ZGTASK_EXPORT void
+    zgtask_node_stop (zgtask_node_t *self);
 
 //  Print properties of object
 ZGTASK_EXPORT void
