@@ -294,7 +294,7 @@
           <Tool Name="VCCLCompilerTool" CompileAs="2" />
         </FileConfiguration>
       </File>
-      <File RelativePath="..\..\..\..\src\zgtask_node.c">
+      <File RelativePath="..\..\..\..\src\zgtask_redirector.c">
         <FileConfiguration Name="Release|Win32">
           <Tool Name="VCCLCompilerTool" CompileAs="2" />
         </FileConfiguration>
@@ -396,7 +396,7 @@
       <File RelativePath="..\..\..\..\include\zgtask_task.h" />
       <File RelativePath="..\..\..\..\include\zgtask_net.h" />
       <File RelativePath="..\..\..\..\include\zgtask_client.h" />
-      <File RelativePath="..\..\..\..\include\zgtask_node.h" />
+      <File RelativePath="..\..\..\..\include\zgtask_redirector.h" />
       <File RelativePath="..\..\..\..\include\zgtask_worker.h" />
       <File RelativePath="..\..\..\..\include\zgtask_tree.h" />
       <File RelativePath="..\..\..\..\include\zgtask_library.h" />

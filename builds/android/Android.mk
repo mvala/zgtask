@@ -20,7 +20,7 @@ include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := zgtask
 LOCAL_C_INCLUDES := ../../include $(LIBZMQ)/include
-LOCAL_SRC_FILES := zgtask_task.c zgtask_net.c zgtask_client.c zgtask_node.c zgtask_worker.c zgtask_tree.c
+LOCAL_SRC_FILES := zgtask_task.c zgtask_net.c zgtask_client.c zgtask_redirector.c zgtask_worker.c zgtask_tree.c
 LOCAL_SHARED_LIBRARIES := zmq
 include $(BUILD_SHARED_LIBRARY)
 

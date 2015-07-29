@@ -19,26 +19,26 @@ main (int argc, char **argv)
     if (argc < 4)
         usage ();
 
-    char *name_node = strdup (argv [1]);
-    char *url_node_parent = strdup (argv [2]);
-    char *url_node_child = strdup (argv [3]);
-    printf ("Creating node '%s' with parent='%s' and child='%s'\n", name_node,
-            url_node_parent, url_node_child);
+    char *name_rdr = strdup (argv [1]);
+    char *url_rdr_parent = strdup (argv [2]);
+    char *url_rdr_child = strdup (argv [3]);
+    printf ("Creating rdr '%s' with parent='%s' and child='%s'\n", name_rdr,
+            url_rdr_parent, url_rdr_child);
 
-    if (!strcmp (name_node, ""))
+    if (!strcmp (name_rdr, ""))
         usage ();
 
-    zgtask_node_t *node =
-        zgtask_node_new (name_node, url_node_parent, url_node_child);
-    zgtask_node_start (node);
-    zgtask_node_print (node);
-    zgtask_node_loop (node);
-    zgtask_node_stop (node);
-    zgtask_node_destroy (&node);
+    zgtask_redirector_t *rdr =
+        zgtask_redirector_new (name_rdr, url_rdr_parent, url_rdr_child);
+    zgtask_redirector_start (rdr);
+    zgtask_redirector_print (rdr);
+    zgtask_redirector_loop (rdr);
+    zgtask_redirector_stop (rdr);
+    zgtask_redirector_destroy (&rdr);
 
-    free (name_node);
-    free (url_node_parent);
-    free (url_node_child);
+    free (name_rdr);
+    free (url_rdr_parent);
+    free (url_rdr_child);
 
     return EXIT_SUCCESS;
 }

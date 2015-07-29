@@ -64,7 +64,7 @@
 	<class name = "zgtask_task">Task info zgtask</class>
 	<class name = "zgtask_net">Zgtask network object</class>
 	<class name = "zgtask_client">Zgtask client object</class>
-	<class name = "zgtask_node">Zgtask node object</class>
+	<class name = "zgtask_redirector">Zgtask redirector object</class>
 	<class name = "zgtask_worker">Zgtask worker object</class>
     <class name = "zgtask_tree">Tree object</class>
     <!--

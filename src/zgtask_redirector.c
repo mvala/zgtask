@@ -1,5 +1,5 @@
 /*  =========================================================================
-    zgtask_node - Zgtask node object
+    zgtask_redirector - Zgtask node object
 
     Copyright (c) the Contributors as noted in the AUTHORS file.
     This file is part of CZMQ, the high-level C binding for 0MQ:
@@ -13,7 +13,7 @@
 
 /*
 @header
-    zgtask_node - Zgtask node object
+    zgtask_redirector - Zgtask node object
 @discuss
 @end
 */
@@ -22,7 +22,7 @@
 
 //  Structure of our class
 
-struct _zgtask_node_t {
+struct _zgtask_redirector_t {
     zgtask_tree_t *tree;
     zgtask_net_t *net;
     char *url_parent;
@@ -31,12 +31,12 @@ struct _zgtask_node_t {
 
 
 //  --------------------------------------------------------------------------
-//  Create a new zgtask_node.
+//  Create a new zgtask_redirector.
 
-zgtask_node_t *
-zgtask_node_new (char *name, const char *url_parent, const char *url_child)
+zgtask_redirector_t *
+zgtask_redirector_new (char *name, const char *url_parent, const char *url_child)
 {
-    zgtask_node_t *self = (zgtask_node_t *) zmalloc (sizeof (zgtask_node_t));
+    zgtask_redirector_t *self = (zgtask_redirector_t *) zmalloc (sizeof (zgtask_redirector_t));
     assert (self);
 
     self->tree = zgtask_tree_new (name, 0);
@@ -48,14 +48,14 @@ zgtask_node_new (char *name, const char *url_parent, const char *url_child)
 }
 
 //  --------------------------------------------------------------------------
-//  Destroy the zgtask_node.
+//  Destroy the zgtask_redirector.
 
 void
-zgtask_node_destroy (zgtask_node_t **self_p)
+zgtask_redirector_destroy (zgtask_redirector_t **self_p)
 {
     assert (self_p);
     if (*self_p) {
-        zgtask_node_t *self = *self_p;
+        zgtask_redirector_t *self = *self_p;
 
         zgtask_tree_destroy (&self->tree);
         free (self->url_parent);
@@ -71,7 +71,7 @@ zgtask_node_destroy (zgtask_node_t **self_p)
 //  Starts node
 
 void
-zgtask_node_start (zgtask_node_t *self)
+zgtask_redirector_start (zgtask_redirector_t *self)
 {
     assert (self);
     zgtask_tree_print (self->tree);
@@ -91,7 +91,7 @@ zgtask_node_start (zgtask_node_t *self)
 //  Main loop
 
 void
-zgtask_node_loop (zgtask_node_t *self)
+zgtask_redirector_loop (zgtask_redirector_t *self)
 {
     assert (self);
 
@@ -163,7 +163,7 @@ zgtask_node_loop (zgtask_node_t *self)
 //  Stops node
 
 void
-zgtask_node_stop (zgtask_node_t *self)
+zgtask_redirector_stop (zgtask_redirector_t *self)
 {
     assert (self);
 
@@ -179,10 +179,10 @@ zgtask_node_stop (zgtask_node_t *self)
 }
 
 //  --------------------------------------------------------------------------
-//  Print properties of the zgtask_node object.
+//  Print properties of the zgtask_redirector object.
 
 void
-zgtask_node_print (zgtask_node_t *self)
+zgtask_redirector_print (zgtask_redirector_t *self)
 {
     assert (self);
     zyre_t *zyre_parent = zgtask_net_get_zyre_parent (self->net);
@@ -203,16 +203,16 @@ zgtask_node_print (zgtask_node_t *self)
 //  Self test of this class.
 
 void
-zgtask_node_test (bool verbose)
+zgtask_redirector_test (bool verbose)
 {
-    printf (" * zgtask_node: ");
+    printf (" * zgtask_redirector: ");
 
     //  @selftest
     //  Simple create/destroy test
-    zgtask_node_t *self = zgtask_node_new ("zgtask_node", "inproc://parent",
+    zgtask_redirector_t *self = zgtask_redirector_new ("zgtask_redirector", "inproc://parent",
                                            "inproc://child");
     assert (self);
-    zgtask_node_destroy (&self);
+    zgtask_redirector_destroy (&self);
     //  @end
 
     printf ("OK\n");

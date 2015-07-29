@@ -16,7 +16,7 @@
     <ClCompile Include="..\..\..\..\src\zgtask_client.c">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\src\zgtask_node.c">
+    <ClCompile Include="..\..\..\..\src\zgtask_redirector.c">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\src\zgtask_worker.c">

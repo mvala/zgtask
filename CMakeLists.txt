@@ -113,7 +113,7 @@ set (zgtask_headers
     include/zgtask_task.h
     include/zgtask_net.h
     include/zgtask_client.h
-    include/zgtask_node.h
+    include/zgtask_redirector.h
     include/zgtask_worker.h
     include/zgtask_tree.h
 )
@@ -128,7 +128,7 @@ set (zgtask_sources
     src/zgtask_task.c
     src/zgtask_net.c
     src/zgtask_client.c
-    src/zgtask_node.c
+    src/zgtask_redirector.c
     src/zgtask_worker.c
     src/zgtask_tree.c
 )
