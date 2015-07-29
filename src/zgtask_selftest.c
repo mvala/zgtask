@@ -36,6 +36,7 @@ main (int argc, char *argv [])
     zgtask_net_test (verbose);
     zgtask_client_test (verbose);
     zgtask_node_test (verbose);
+    zgtask_worker_test (verbose);
     zgtask_tree_test (verbose);
 
     printf ("Tests passed OK\n");

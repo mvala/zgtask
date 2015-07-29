@@ -93,6 +93,9 @@
     <ClCompile Include="..\..\..\..\src\zgtask_node.c">
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\zgtask_worker.c">
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\zgtask_tree.c">
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>

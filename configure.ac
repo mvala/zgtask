@@ -312,6 +312,36 @@ AC_ARG_WITH([zgtask],
 AM_CONDITIONAL([WITH_ZGTASK], [test x$with_zgtask != xno])
 AM_COND_IF([WITH_ZGTASK], [AC_MSG_NOTICE([WITH_ZGTASK defined])])
 
+# Check for zgtask_cli intent
+AC_ARG_WITH([zgtask_cli],
+    AS_HELP_STRING([--with-zgtask_cli],
+        [Compile and install the zgtask_cli program [default=yes].]),
+    [with_zgtask_cli=$withval],
+    [with_zgtask_cli=yes])
+
+AM_CONDITIONAL([WITH_ZGTASK_CLI], [test x$with_zgtask_cli != xno])
+AM_COND_IF([WITH_ZGTASK_CLI], [AC_MSG_NOTICE([WITH_ZGTASK_CLI defined])])
+
+# Check for zgtask_rdr intent
+AC_ARG_WITH([zgtask_rdr],
+    AS_HELP_STRING([--with-zgtask_rdr],
+        [Compile and install the zgtask_rdr program [default=yes].]),
+    [with_zgtask_rdr=$withval],
+    [with_zgtask_rdr=yes])
+
+AM_CONDITIONAL([WITH_ZGTASK_RDR], [test x$with_zgtask_rdr != xno])
+AM_COND_IF([WITH_ZGTASK_RDR], [AC_MSG_NOTICE([WITH_ZGTASK_RDR defined])])
+
+# Check for zgtask_wk intent
+AC_ARG_WITH([zgtask_wk],
+    AS_HELP_STRING([--with-zgtask_wk],
+        [Compile and install the zgtask_wk program [default=yes].]),
+    [with_zgtask_wk=$withval],
+    [with_zgtask_wk=yes])
+
+AM_CONDITIONAL([WITH_ZGTASK_WK], [test x$with_zgtask_wk != xno])
+AM_COND_IF([WITH_ZGTASK_WK], [AC_MSG_NOTICE([WITH_ZGTASK_WK defined])])
+
 # Checks for library functions.
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS(perror gettimeofday memset getifaddrs)

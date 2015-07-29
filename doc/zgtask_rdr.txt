@@ -1,0 +1,26 @@
+zgtask_rdr(1)
+=============
+
+NAME
+----
+zgtask_rdr - no title found
+
+SYNOPSIS
+--------
+----
+Please add @interface section in ../src/zgtask_rdr.c.
+----
+
+DESCRIPTION
+-----------
+
+Please add @header section in ../src/zgtask_rdr.c.
+
+Please add @discuss section in ../src/zgtask_rdr.c.
+
+EXAMPLE
+-------
+.From zgtask_rdr_test method
+----
+Please add @selftest section in ../src/zgtask_rdr.c.
+----

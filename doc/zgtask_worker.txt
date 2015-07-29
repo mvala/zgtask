@@ -1,0 +1,29 @@
+zgtask_worker(1)
+================
+
+NAME
+----
+zgtask_worker - Zgtask worker object
+
+SYNOPSIS
+--------
+----
+Please add @interface section in ../src/zgtask_worker.c.
+----
+
+DESCRIPTION
+-----------
+
+zgtask_worker - Zgtask worker object
+
+Please add @discuss section in ../src/zgtask_worker.c.
+
+EXAMPLE
+-------
+.From zgtask_worker_test method
+----
+//  Simple create/destroy test
+zgtask_worker_t *self = zgtask_worker_new ();
+assert (self);
+zgtask_worker_destroy (&self);
+----

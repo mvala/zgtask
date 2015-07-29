@@ -1,0 +1,17 @@
+#### zgtask_worker - Zgtask worker object
+
+zgtask_worker - Zgtask worker object
+
+Please add @discuss section in ../src/zgtask_worker.c.
+
+This is the class interface:
+
+Please add @interface section in ../src/zgtask_worker.c.
+
+This is the class self test code:
+
+    //  Simple create/destroy test
+    zgtask_worker_t *self = zgtask_worker_new ();
+    assert (self);
+    zgtask_worker_destroy (&self);
+

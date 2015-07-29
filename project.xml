@@ -65,6 +65,7 @@
 	<class name = "zgtask_net">Zgtask network object</class>
 	<class name = "zgtask_client">Zgtask client object</class>
 	<class name = "zgtask_node">Zgtask node object</class>
+	<class name = "zgtask_worker">Zgtask worker object</class>
     <class name = "zgtask_tree">Tree object</class>
     <!--
         Actors, are build using the simple actor framework from czmq. If the
@@ -85,6 +86,9 @@
     -->
     <main name = "zgtask_tester">zgtask tester tool</main>
     <main name = "zgtask">zgtask main program</main>
+    <main name = "zgtask_cli">zgtask client main program</main>
+    <main name = "zgtask_rdr">zgtask redirector main program</main>
+    <main name = "zgtask_wk">zgtask worker main program</main>
     <!--
         Models that we build using GSL.
         This will generate a 'make code' target to build the models.

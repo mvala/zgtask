@@ -114,6 +114,7 @@ set (zgtask_headers
     include/zgtask_net.h
     include/zgtask_client.h
     include/zgtask_node.h
+    include/zgtask_worker.h
     include/zgtask_tree.h
 )
 source_group ("Header Files" FILES ${zgtask_headers})
@@ -128,6 +129,7 @@ set (zgtask_sources
     src/zgtask_net.c
     src/zgtask_client.c
     src/zgtask_node.c
+    src/zgtask_worker.c
     src/zgtask_tree.c
 )
 source_group ("Source Files" FILES ${zgtask_sources})

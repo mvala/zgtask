@@ -1,0 +1,26 @@
+zgtask_cli(1)
+=============
+
+NAME
+----
+zgtask_cli - no title found
+
+SYNOPSIS
+--------
+----
+Please add @interface section in ../src/zgtask_cli.c.
+----
+
+DESCRIPTION
+-----------
+
+Please add @header section in ../src/zgtask_cli.c.
+
+Please add @discuss section in ../src/zgtask_cli.c.
+
+EXAMPLE
+-------
+.From zgtask_cli_test method
+----
+Please add @selftest section in ../src/zgtask_cli.c.
+----
