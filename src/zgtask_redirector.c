@@ -36,7 +36,8 @@ struct _zgtask_redirector_t {
 zgtask_redirector_t *
 zgtask_redirector_new (char *name, const char *url_parent, const char *url_child)
 {
-    zgtask_redirector_t *self = (zgtask_redirector_t *) zmalloc (sizeof (zgtask_redirector_t));
+    zgtask_redirector_t *self =
+        (zgtask_redirector_t *) zmalloc (sizeof (zgtask_redirector_t));
     assert (self);
 
     self->tree = zgtask_tree_new (name, 0);
@@ -120,13 +121,11 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             zyre_event = zyre_event_new (zyre_parent);
             if (!zyre_event)
                 break;
-            if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT) {
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT)
                 zyre_event_print (zyre_event);
-            }
             else
-            if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER) {
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER)
                 zyre_event_print (zyre_event);
-            }
             zyre_event_destroy (&zyre_event);
         }
         else
@@ -134,13 +133,11 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             zyre_event = zyre_event_new (zyre_child);
             if (!zyre_event)
                 break;
-            if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT) {
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT)
                 zyre_event_print (zyre_event);
-            }
             else
-            if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER) {
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER)
                 zyre_event_print (zyre_event);
-            }
             zyre_event_destroy (&zyre_event);
         }
 
@@ -202,8 +199,9 @@ zgtask_redirector_test (bool verbose)
 
     //  @selftest
     //  Simple create/destroy test
-    zgtask_redirector_t *self = zgtask_redirector_new ("zgtask_redirector", "inproc://parent",
-                                           "inproc://child");
+    zgtask_redirector_t *self = zgtask_redirector_new ("zgtask_redirector",
+                                                       "inproc://parent",
+                                                       "inproc://child");
     assert (self);
     zgtask_redirector_destroy (&self);
     //  @end
