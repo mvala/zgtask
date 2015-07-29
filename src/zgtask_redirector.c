@@ -121,6 +121,12 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             zyre_event = zyre_event_new (zyre_parent);
             if (!zyre_event)
                 break;
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_ENTER)
+                zyre_event_print (zyre_event);
+            else
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_EXIT)
+                    zyre_event_print (zyre_event);
+            else
             if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT)
                 zyre_event_print (zyre_event);
             else
@@ -133,6 +139,12 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             zyre_event = zyre_event_new (zyre_child);
             if (!zyre_event)
                 break;
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_ENTER)
+                zyre_event_print (zyre_event);
+            else
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_EXIT)
+                    zyre_event_print (zyre_event);
+            else
             if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT)
                 zyre_event_print (zyre_event);
             else
