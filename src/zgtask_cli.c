@@ -19,7 +19,7 @@ main (int argc, char **argv)
     char *name_cli = strdup (argv [1]);
     char *url_cli_parent = strdup (argv [2]);
 
-    if (strcmp (name_cli, ""))
+    if (!strcmp (name_cli, ""))
         usage ();
 
     printf ("Creating client '%s' and connecting to '%s' \n", name_cli,

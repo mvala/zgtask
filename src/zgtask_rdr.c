@@ -16,7 +16,7 @@ usage ()
 int
 main (int argc, char **argv)
 {
-    if (argc < 3)
+    if (argc < 4)
         usage ();
 
     char *name_node = strdup (argv [1]);
@@ -24,6 +24,9 @@ main (int argc, char **argv)
     char *url_node_child = strdup (argv [3]);
     printf ("Creating node '%s' with parent='%s' and child='%s'\n", name_node,
             url_node_parent, url_node_child);
+
+    if (!strcmp (name_node, ""))
+        usage ();
 
     zgtask_node_t *node =
         zgtask_node_new (name_node, url_node_parent, url_node_child);
