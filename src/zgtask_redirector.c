@@ -76,12 +76,12 @@ zgtask_redirector_start (zgtask_redirector_t *self)
     assert (self);
     zgtask_tree_print (self->tree);
     zyre_t *zyre_parent = zgtask_net_init_zyre_parent (self->net);
-    zyre_gossip_bind (zyre_parent, self->url_parent);
+    zyre_gossip_connect (zyre_parent, self->url_parent);
     zyre_start (zyre_parent);
     zyre_join (zyre_parent, "GLOBAL");
 
     zyre_t *zyre_child = zgtask_net_init_zyre_child (self->net);
-    zyre_gossip_connect (zyre_child, self->url_child);
+    zyre_gossip_bind (zyre_child, self->url_child);
     zyre_start (zyre_child);
     zyre_join (zyre_child, "GLOBAL");
 
@@ -103,8 +103,6 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
 
     zyre_event_t *zyre_event = NULL;
 
-    int nparent = 0;
-    int nchild = 0;
     int timeout = -1;
     while (!zsys_interrupted) {
         void *which = zpoller_wait (poller, timeout);
@@ -123,23 +121,11 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             if (!zyre_event)
                 break;
             if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT) {
-                nparent++;
-//                zyre_event_print (zyre_event);
-                zmsg_t *msg = zmsg_dup (zyre_event_msg (zyre_event));
-                zlist_t *l = zyre_peers (zyre_child);
-                char *peer = (char *) zlist_first (l);
-                printf ("\rnparent=%d whispers=%d peers=%ld", nparent, nchild, zlist_size (
-                            l));
-                fflush (stdout);
-                if (peer)
-                    zyre_whisper (zyre_child, peer, &msg);
+                zyre_event_print (zyre_event);
             }
             else
             if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER) {
-                nchild++;
-                printf ("\rnparent=%d nchild=%d", nparent, nchild);
-                fflush (stdout);
-//                zyre_event_print (zyre_event);
+                zyre_event_print (zyre_event);
             }
             zyre_event_destroy (&zyre_event);
         }
@@ -148,6 +134,13 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             zyre_event = zyre_event_new (zyre_child);
             if (!zyre_event)
                 break;
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT) {
+                zyre_event_print (zyre_event);
+            }
+            else
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER) {
+                zyre_event_print (zyre_event);
+            }
             zyre_event_destroy (&zyre_event);
         }
 
