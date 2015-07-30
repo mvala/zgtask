@@ -420,8 +420,11 @@ char *
 zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
 {
     assert (self);
-    if (!json)
+    bool is_root = false;
+    if (!json) {
         json = json_object ();
+        is_root = true;
+    }
     assert (json);
 
     json_t *array = NULL;
@@ -436,11 +439,19 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
 
 
     json_object_set_new (obj_array, "name", json_string (self->name));
-    json_t *obj_task = json_object ();
-    json_object_set_new (obj_array, "task", obj_task);
     zgtask_task_t *task = zgtask_tree_get_task (self);
-    if (task)
+    if (task) {
+        json_t *obj_task = json_object ();
+        json_object_set_new (obj_array, "task", obj_task);
         zgtask_task_export_json (task, obj_task);
+    }
+
+    zgtask_packet_simple_t *packet = (zgtask_packet_simple_t *) zgtask_tree_get_packet (self);
+    if (packet) {
+        json_t *obj_task = json_object ();
+        json_object_set_new (obj_array, "packet", obj_task);
+        zgtask_packet_simple_export_json (packet, obj_task);
+    }
 
     if (self->brother)
         zgtask_tree_export_json (self->brother, 0, array);
@@ -451,7 +462,7 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
     //  Cleaning object array
     json_decref (obj_array);
 
-    if (self->parent)
+    if (!is_root)
         return 0;
 
     if (path)
@@ -489,6 +500,9 @@ zgtask_tree_print (zgtask_tree_t *self)
     if (net)
         zgtask_net_print (net);
 
+    zgtask_packet_simple_t *packet = (zgtask_packet_simple_t *) zgtask_tree_get_packet (self);
+    if (packet)
+    	zgtask_packet_simple_print (packet);
 
     //  Printf child and brother
     if (self->child) zgtask_tree_print (self->child);

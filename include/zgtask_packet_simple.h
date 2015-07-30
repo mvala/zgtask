@@ -40,6 +40,14 @@ ZGTASK_EXPORT void
 ZGTASK_EXPORT void
     zgtask_packet_simple_set_max (zgtask_packet_simple_t *self, uint max);
 
+//  Inports packet to json
+ZGTASK_EXPORT void
+    zgtask_packet_simple_import_json (zgtask_packet_simple_t *self, json_t *json);
+
+//  Exports packet to json
+ZGTASK_EXPORT void
+    zgtask_packet_simple_export_json (zgtask_packet_simple_t *self, json_t *json);
+
 //  Print properties of object
 ZGTASK_EXPORT void
     zgtask_packet_simple_print (zgtask_packet_simple_t *self);

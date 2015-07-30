@@ -107,6 +107,46 @@ zgtask_packet_simple_set_max (zgtask_packet_simple_t *self, uint max)
 }
 
 //  --------------------------------------------------------------------------
+//  Inports packet to json
+
+void
+    zgtask_packet_simple_import_json (zgtask_packet_simple_t *self, json_t *json)
+{
+    assert (self);
+    assert (json);
+
+    json_t *js_tmp;
+
+    json_t *js_task =  json_object_get (json, "packet");
+    if (!json_is_object (js_task)) {
+        fprintf (stderr, "error: packet is not a object\n");
+        json_decref (json);
+        return;
+    }
+
+
+    js_tmp = json_object_get (js_task, "min");
+    zgtask_packet_simple_set_min (self,  json_integer_value (js_tmp));
+    js_tmp = json_object_get (js_task, "max");
+    zgtask_packet_simple_set_max (self,  json_integer_value (js_tmp));
+
+}
+
+//  --------------------------------------------------------------------------
+//  Exports packet to json
+
+void
+    zgtask_packet_simple_export_json (zgtask_packet_simple_t *self, json_t *json)
+{
+    assert (self);
+    assert (json);
+
+    json_object_set_new (json, "min", json_integer (self->min));
+    json_object_set_new (json, "max", json_integer (self->max));
+}
+
+
+//  --------------------------------------------------------------------------
 //  Print properties of the zgtask_packet_simple object.
 
 void

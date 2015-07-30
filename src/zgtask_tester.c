@@ -181,12 +181,17 @@ testPacketSimple (int min, int max)
     while (p) {
         p = zgtask_packet_simple_get_packet (packet, 3);
         if (!p)
-        	break;
+            break;
         zgtask_packet_simple_print (p);
         t_p = zgtask_tree_add_brother (t_p, "%d", ++id);
         data  = zgtask_tree_get_data (t_p);
         zhashx_insert (data, "packet", p);
     }
+
+    zgtask_tree_print (t_p);
+
+    char *json_str = zgtask_tree_export_json (t_p, 0, 0);
+    printf ("%s\n", json_str);
 
     return root;
 }
