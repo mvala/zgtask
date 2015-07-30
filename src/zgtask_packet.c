@@ -69,11 +69,11 @@ zgtask_packet_t *
 zgtask_packet_get_packet (zgtask_packet_t *self, uint size)
 {
     assert (self);
-    if (self->max <= self->cur)
+    if (self->max < self->cur)
         return NULL;
 
     uint max = self->cur + size - 1;
-    if (max > self->max)
+    if (max >= self->max)
         max = self->max;
 
     zgtask_packet_t *packet = zgtask_packet_new ();
@@ -110,7 +110,7 @@ zgtask_packet_set_max (zgtask_packet_t *self, uint max)
 //  Inports packet to json
 
 void
-    zgtask_packet_import_json (zgtask_packet_t *self, json_t *json)
+zgtask_packet_import_json (zgtask_packet_t *self, json_t *json)
 {
     assert (self);
     assert (json);
@@ -136,7 +136,7 @@ void
 //  Exports packet to json
 
 void
-    zgtask_packet_export_json (zgtask_packet_t *self, json_t *json)
+zgtask_packet_export_json (zgtask_packet_t *self, json_t *json)
 {
     assert (self);
     assert (json);
