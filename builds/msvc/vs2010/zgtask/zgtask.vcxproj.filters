@@ -10,6 +10,9 @@
     <ClCompile Include="..\..\..\..\src\zgtask_task.c">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\src\zgtask_packet_simple.c">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\src\zgtask_net.c">
       <Filter>src</Filter>
     </ClCompile>

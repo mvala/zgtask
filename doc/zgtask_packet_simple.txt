@@ -1,0 +1,43 @@
+zgtask_packet_simple(3)
+=======================
+
+NAME
+----
+zgtask_packet_simple - Zgtask packet simple with min and max value
+
+SYNOPSIS
+--------
+----
+//  Create a new zgtask_packet_simple
+ZGTASK_EXPORT zgtask_packet_simple_t *
+    zgtask_packet_simple_new (void);
+
+//  Destroy the zgtask_packet_simple
+ZGTASK_EXPORT void
+    zgtask_packet_simple_destroy (zgtask_packet_simple_t **self_p);
+
+//  Print properties of object
+ZGTASK_EXPORT void
+    zgtask_packet_simple_print (zgtask_packet_simple_t *self);
+
+//  Self test of this class
+ZGTASK_EXPORT void
+    zgtask_packet_simple_test (bool verbose);
+----
+
+DESCRIPTION
+-----------
+
+zgtask_packet_simple - Zgtask packet simple with min and max value
+
+Please add @discuss section in ../src/zgtask_packet_simple.c.
+
+EXAMPLE
+-------
+.From zgtask_packet_simple_test method
+----
+//  Simple create/destroy test
+zgtask_packet_simple_t *self = zgtask_packet_simple_new ();
+assert (self);
+zgtask_packet_simple_destroy (&self);
+----

@@ -230,6 +230,38 @@
           <Tool Name="VCCLCompilerTool" CompileAs="2" />
         </FileConfiguration>
       </File>
+      <File RelativePath="..\..\..\..\src\zgtask_packet_simple.c">
+        <FileConfiguration Name="Release|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="Release|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="Debug|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="Debug|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="DebugDLL|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="DebugDLL|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="ReleaseDLL|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="ReleaseDLL|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="RelWithDebInfo|Win32">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+        <FileConfiguration Name="RelWithDebInfo|x64">
+          <Tool Name="VCCLCompilerTool" CompileAs="2" />
+        </FileConfiguration>
+      </File>
       <File RelativePath="..\..\..\..\src\zgtask_net.c">
         <FileConfiguration Name="Release|Win32">
           <Tool Name="VCCLCompilerTool" CompileAs="2" />
@@ -394,6 +426,7 @@
     <Filter Name="Header Files">
       <File RelativePath="..\..\..\..\builds\msvc\platform.h" />
       <File RelativePath="..\..\..\..\include\zgtask_task.h" />
+      <File RelativePath="..\..\..\..\include\zgtask_packet_simple.h" />
       <File RelativePath="..\..\..\..\include\zgtask_net.h" />
       <File RelativePath="..\..\..\..\include\zgtask_client.h" />
       <File RelativePath="..\..\..\..\include\zgtask_redirector.h" />

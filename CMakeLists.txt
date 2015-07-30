@@ -111,6 +111,7 @@ set (zgtask_headers
     include/zgtask_library.h
     include/zgtask.h
     include/zgtask_task.h
+    include/zgtask_packet_simple.h
     include/zgtask_net.h
     include/zgtask_client.h
     include/zgtask_redirector.h
@@ -126,6 +127,7 @@ install(FILES ${zgtask_headers} DESTINATION include)
 include_directories("${BINARY_DIR}" "${SOURCE_DIR}/include")
 set (zgtask_sources
     src/zgtask_task.c
+    src/zgtask_packet_simple.c
     src/zgtask_net.c
     src/zgtask_client.c
     src/zgtask_redirector.c
