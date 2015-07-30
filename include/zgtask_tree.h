@@ -45,7 +45,7 @@ ZGTASK_EXPORT zgtask_net_t *
     zgtask_tree_get_net (zgtask_tree_t *self);
 
 //  Returns packet object
-ZGTASK_EXPORT void *
+ZGTASK_EXPORT zgtask_packet_t *
     zgtask_tree_get_packet (zgtask_tree_t *self);
 
 //  Returns task object
@@ -94,7 +94,7 @@ ZGTASK_EXPORT int
 
 //  Export tree to json
 ZGTASK_EXPORT char *
-    zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json);
+    zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json, bool compact);
 
 //  Print properties of object
 ZGTASK_EXPORT void

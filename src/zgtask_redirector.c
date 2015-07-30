@@ -139,8 +139,15 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             zyre_event = zyre_event_new (zyre_child);
             if (!zyre_event)
                 break;
-            if (zyre_event_type (zyre_event) == ZYRE_EVENT_ENTER)
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_ENTER) {
                 zyre_event_print (zyre_event);
+                if (zyre_event_header(zyre_event, "X-ZGTASK-CLI")) {
+                	zmsg_t *msg = zmsg_new();
+                	zmsg_addstr(msg, "-1");
+                	zmsg_addstr(msg, "1");
+                	zyre_whisper(zyre_child, zyre_event_sender(zyre_event),&msg);
+                }
+            }
             else
             if (zyre_event_type (zyre_event) == ZYRE_EVENT_EXIT)
                 zyre_event_print (zyre_event);
@@ -148,10 +155,17 @@ zgtask_redirector_loop (zgtask_redirector_t *self)
             if (zyre_event_type (zyre_event) == ZYRE_EVENT_SHOUT)
                 zyre_event_print (zyre_event);
             else
-            if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER)
+            if (zyre_event_type (zyre_event) == ZYRE_EVENT_WHISPER) {
                 zyre_event_print (zyre_event);
+            	zmsg_t *msg = zmsg_new();
+            	zmsg_addstr(msg, "0");
+            	zmsg_addstr(msg, "2");
+            	zyre_whisper(zyre_child, zyre_event_sender(zyre_event),&msg);
+            }
             zyre_event_destroy (&zyre_event);
         }
+
+        zclock_sleep(10);
 
 
 

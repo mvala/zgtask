@@ -114,7 +114,7 @@ testJsonExport (int min, int max)
 {
 
     zgtask_tree_t *client = testJobs2 (min, max);
-    char *json_str = zgtask_tree_export_json (client, JSON_FILENAME, 0);
+    char *json_str = zgtask_tree_export_json (client, JSON_FILENAME, 0, 0);
     if (json_str)
         printf ("%s\n", json_str);
 
@@ -189,7 +189,7 @@ testPacketSimple (int min, int max)
     zgtask_tree_print (t_p);
 
     //  Print last packet
-    json_str = zgtask_tree_export_json (t_p, 0, 0);
+    json_str = zgtask_tree_export_json (t_p, 0, 0, 0);
     printf ("%s\n", json_str);
 
     return root;

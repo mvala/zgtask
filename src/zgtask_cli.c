@@ -22,9 +22,15 @@ main (int argc, char **argv)
     if (!strcmp (name_cli, ""))
         usage ();
 
+    zgtask_packet_t *packet = zgtask_packet_new ();
+    zgtask_packet_set_min (packet, 1);
+    zgtask_packet_set_max (packet, 1000);
+
     printf ("Creating client '%s' and connecting to '%s' \n", name_cli,
             url_cli_parent);
     zgtask_client_t *client = zgtask_client_new (name_cli, url_cli_parent);
+    zgtask_client_set_packet (client, packet);
+
     zgtask_client_start (client);
     zgtask_client_print (client);
     zgtask_client_loop (client);

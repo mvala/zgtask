@@ -28,6 +28,14 @@ ZGTASK_EXPORT zgtask_client_t *
 ZGTASK_EXPORT void
     zgtask_client_destroy (zgtask_client_t **self_p);
 
+//  Set packet
+ZGTASK_EXPORT void
+    zgtask_client_set_packet (zgtask_client_t *self, zgtask_packet_t *packet);
+
+//  Return packet with packet size in json format
+ZGTASK_EXPORT char *
+    zgtask_client_get_packet_json (zgtask_client_t *self, int *id, int size);
+
 //  Starts client
 ZGTASK_EXPORT void
     zgtask_client_start (zgtask_client_t *self);

@@ -81,6 +81,13 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
             zhashx_delete (self->data, "task");
         }
 
+        // Cleaning packet
+        zgtask_packet_t *packet = zgtask_tree_get_packet (self);
+        if (packet) {
+            zgtask_packet_destroy (&packet);
+            zhashx_delete (self->data, "packet");
+        }
+
         //  Destroying data table
         zhashx_destroy (&self->data);
 
@@ -149,13 +156,13 @@ zgtask_tree_get_net (zgtask_tree_t *self)
 }
 
 //  --------------------------------------------------------------------------
-//  Return task object
+//  Return packet object
 
-void *
+zgtask_packet_t *
 zgtask_tree_get_packet (zgtask_tree_t *self)
 {
     assert (self);
-    return (void *) zhashx_lookup (self->data, "packet");
+    return (zgtask_packet_t *) zhashx_lookup (self->data, "packet");
 }
 
 //  --------------------------------------------------------------------------
@@ -417,7 +424,7 @@ zgtask_tree_import_json (zgtask_tree_t *self, json_t *json)
 //  --------------------------------------------------------------------------
 //  Export tree to json
 char *
-zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
+zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json, bool compact)
 {
     assert (self);
     bool is_root = false;
@@ -454,10 +461,10 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
     }
 
     if (self->brother)
-        zgtask_tree_export_json (self->brother, 0, array);
+        zgtask_tree_export_json (self->brother, 0, array, compact);
 
     if (self->child)
-        zgtask_tree_export_json (self->child, 0, obj_array);
+        zgtask_tree_export_json (self->child, 0, obj_array, compact);
 
     //  Cleaning object array
     json_decref (obj_array);
@@ -465,10 +472,14 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
     if (!is_root)
         return 0;
 
-    if (path)
-        json_dump_file (json, path, JSON_COMPACT);
+    size_t json_flag = JSON_STRICT;
+    if (compact)
+    	json_flag = JSON_COMPACT;
 
-    char *json_str = json_dumps (json, JSON_STRICT);
+    if (path)
+        json_dump_file (json, path, json_flag);
+
+    char *json_str = json_dumps (json, json_flag);
 
     //  Cleaning
     json_decref (json);
@@ -502,7 +513,7 @@ zgtask_tree_print (zgtask_tree_t *self)
 
     zgtask_packet_t *packet = (zgtask_packet_t *) zgtask_tree_get_packet (self);
     if (packet)
-    	zgtask_packet_print (packet);
+        zgtask_packet_print (packet);
 
     //  Printf child and brother
     if (self->child) zgtask_tree_print (self->child);
