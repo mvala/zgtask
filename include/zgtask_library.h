@@ -51,8 +51,8 @@
 //  Opaque class structures to allow forward references
 typedef struct _zgtask_task_t zgtask_task_t;
 #define ZGTASK_TASK_T_DEFINED
-typedef struct _zgtask_packet_simple_t zgtask_packet_simple_t;
-#define ZGTASK_PACKET_SIMPLE_T_DEFINED
+typedef struct _zgtask_packet_t zgtask_packet_t;
+#define ZGTASK_PACKET_T_DEFINED
 typedef struct _zgtask_net_t zgtask_net_t;
 #define ZGTASK_NET_T_DEFINED
 typedef struct _zgtask_client_t zgtask_client_t;
@@ -67,7 +67,7 @@ typedef struct _zgtask_tree_t zgtask_tree_t;
 
 //  Public API classes
 #include "zgtask_task.h"
-#include "zgtask_packet_simple.h"
+#include "zgtask_packet.h"
 #include "zgtask_net.h"
 #include "zgtask_client.h"
 #include "zgtask_redirector.h"

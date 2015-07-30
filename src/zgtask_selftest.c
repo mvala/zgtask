@@ -33,7 +33,7 @@ main (int argc, char *argv [])
     printf ("Running zgtask selftests...\n");
 
     zgtask_task_test (verbose);
-    zgtask_packet_simple_test (verbose);
+    zgtask_packet_test (verbose);
     zgtask_net_test (verbose);
     zgtask_client_test (verbose);
     zgtask_redirector_test (verbose);

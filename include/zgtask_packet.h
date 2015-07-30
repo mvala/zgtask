@@ -1,5 +1,5 @@
 /*  =========================================================================
-    zgtask_packet_simple - Zgtask packet simple with min and max value
+    zgtask_packet - Zgtask packet simple with min and max value
 
     Copyright (c) the Contributors as noted in the AUTHORS file.       
     This file is part of CZMQ, the high-level C binding for 0MQ:       
@@ -20,41 +20,41 @@ extern "C" {
 
 
 //  @interface
-//  Create a new zgtask_packet_simple
-ZGTASK_EXPORT zgtask_packet_simple_t *
-    zgtask_packet_simple_new (void);
+//  Create a new zgtask_packet
+ZGTASK_EXPORT zgtask_packet_t *
+    zgtask_packet_new (void);
 
-//  Destroy the zgtask_packet_simple
+//  Destroy the zgtask_packet
 ZGTASK_EXPORT void
-    zgtask_packet_simple_destroy (zgtask_packet_simple_t **self_p);
+    zgtask_packet_destroy (zgtask_packet_t **self_p);
 
 //  Gets packet with packet size
-ZGTASK_EXPORT zgtask_packet_simple_t *
-    zgtask_packet_simple_get_packet (zgtask_packet_simple_t *self, uint size);
+ZGTASK_EXPORT zgtask_packet_t *
+    zgtask_packet_get_packet (zgtask_packet_t *self, uint size);
 
 //  Set min value
 ZGTASK_EXPORT void
-    zgtask_packet_simple_set_min (zgtask_packet_simple_t *self, uint min);
+    zgtask_packet_set_min (zgtask_packet_t *self, uint min);
 
 //  Set max value
 ZGTASK_EXPORT void
-    zgtask_packet_simple_set_max (zgtask_packet_simple_t *self, uint max);
+    zgtask_packet_set_max (zgtask_packet_t *self, uint max);
 
 //  Inports packet to json
 ZGTASK_EXPORT void
-    zgtask_packet_simple_import_json (zgtask_packet_simple_t *self, json_t *json);
+    zgtask_packet_import_json (zgtask_packet_t *self, json_t *json);
 
 //  Exports packet to json
 ZGTASK_EXPORT void
-    zgtask_packet_simple_export_json (zgtask_packet_simple_t *self, json_t *json);
+    zgtask_packet_export_json (zgtask_packet_t *self, json_t *json);
 
 //  Print properties of object
 ZGTASK_EXPORT void
-    zgtask_packet_simple_print (zgtask_packet_simple_t *self);
+    zgtask_packet_print (zgtask_packet_t *self);
 
 //  Self test of this class
 ZGTASK_EXPORT void
-    zgtask_packet_simple_test (bool verbose);
+    zgtask_packet_test (bool verbose);
 //  @end
 
 #ifdef __cplusplus

@@ -160,27 +160,27 @@ testPacketSimple (int min, int max)
     zgtask_tree_t *root = zgtask_tree_new ("root", 0);
     zhashx_t *data  = zgtask_tree_get_data (root);
 
-    zgtask_packet_simple_t *packet = zgtask_packet_simple_new ();
-    zgtask_packet_simple_set_min (packet, min);
-    zgtask_packet_simple_set_max (packet, max);
+    zgtask_packet_t *packet = zgtask_packet_new ();
+    zgtask_packet_set_min (packet, min);
+    zgtask_packet_set_max (packet, max);
     zhashx_insert (data, "packet", packet);
 
-    packet = (zgtask_packet_simple_t *) zgtask_tree_get_packet (root);
-    zgtask_packet_simple_print (packet);
+    packet = (zgtask_packet_t *) zgtask_tree_get_packet (root);
+    zgtask_packet_print (packet);
 
     int id = 0;
-    zgtask_packet_simple_t *p = zgtask_packet_simple_get_packet (packet, 1);
-//    zgtask_packet_simple_print (p);
+    zgtask_packet_t *p = zgtask_packet_get_packet (packet, 1);
+//    zgtask_packet_print (p);
 
     zgtask_tree_t *t_p = zgtask_tree_add_child (root, "%d", ++id);
     data  = zgtask_tree_get_data (t_p);
     zhashx_insert (data, "packet", p);
     char *json_str;
     while (p) {
-        p = zgtask_packet_simple_get_packet (packet, 3);
+        p = zgtask_packet_get_packet (packet, 3);
         if (!p)
             break;
-//        zgtask_packet_simple_print (p);
+//        zgtask_packet_print (p);
         t_p = zgtask_tree_add_brother (t_p, "%d", ++id);
         data  = zgtask_tree_get_data (t_p);
         zhashx_insert (data, "packet", p);

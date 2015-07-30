@@ -18,7 +18,7 @@ pkgconfig_DATA = src/libzgtask.pc
 include_HEADERS = \
     include/zgtask.h \
     include/zgtask_task.h \
-    include/zgtask_packet_simple.h \
+    include/zgtask_packet.h \
     include/zgtask_net.h \
     include/zgtask_client.h \
     include/zgtask_redirector.h \
@@ -28,7 +28,7 @@ include_HEADERS = \
 
 src_libzgtask_la_SOURCES = \
     src/zgtask_task.c \
-    src/zgtask_packet_simple.c \
+    src/zgtask_packet.c \
     src/zgtask_net.c \
     src/zgtask_client.c \
     src/zgtask_redirector.c \

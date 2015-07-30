@@ -446,11 +446,11 @@ zgtask_tree_export_json (zgtask_tree_t *self, char *path, json_t *json)
         zgtask_task_export_json (task, obj_task);
     }
 
-    zgtask_packet_simple_t *packet = (zgtask_packet_simple_t *) zgtask_tree_get_packet (self);
+    zgtask_packet_t *packet = (zgtask_packet_t *) zgtask_tree_get_packet (self);
     if (packet) {
         json_t *obj_task = json_object ();
         json_object_set_new (obj_array, "packet", obj_task);
-        zgtask_packet_simple_export_json (packet, obj_task);
+        zgtask_packet_export_json (packet, obj_task);
     }
 
     if (self->brother)
@@ -500,9 +500,9 @@ zgtask_tree_print (zgtask_tree_t *self)
     if (net)
         zgtask_net_print (net);
 
-    zgtask_packet_simple_t *packet = (zgtask_packet_simple_t *) zgtask_tree_get_packet (self);
+    zgtask_packet_t *packet = (zgtask_packet_t *) zgtask_tree_get_packet (self);
     if (packet)
-    	zgtask_packet_simple_print (packet);
+    	zgtask_packet_print (packet);
 
     //  Printf child and brother
     if (self->child) zgtask_tree_print (self->child);

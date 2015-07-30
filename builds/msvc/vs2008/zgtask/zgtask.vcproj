@@ -230,7 +230,7 @@
           <Tool Name="VCCLCompilerTool" CompileAs="2" />
         </FileConfiguration>
       </File>
-      <File RelativePath="..\..\..\..\src\zgtask_packet_simple.c">
+      <File RelativePath="..\..\..\..\src\zgtask_packet.c">
         <FileConfiguration Name="Release|Win32">
           <Tool Name="VCCLCompilerTool" CompileAs="2" />
         </FileConfiguration>
@@ -426,7 +426,7 @@
     <Filter Name="Header Files">
       <File RelativePath="..\..\..\..\builds\msvc\platform.h" />
       <File RelativePath="..\..\..\..\include\zgtask_task.h" />
-      <File RelativePath="..\..\..\..\include\zgtask_packet_simple.h" />
+      <File RelativePath="..\..\..\..\include\zgtask_packet.h" />
       <File RelativePath="..\..\..\..\include\zgtask_net.h" />
       <File RelativePath="..\..\..\..\include\zgtask_client.h" />
       <File RelativePath="..\..\..\..\include\zgtask_redirector.h" />

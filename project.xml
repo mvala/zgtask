@@ -62,7 +62,7 @@
     <class name = "someother" private = "1">Private class description</class>
     -->
 	<class name = "zgtask_task">Task info zgtask</class>
-	<class name = "zgtask_packet_simple">Zgtask packet simple with min and max value</class>
+	<class name = "zgtask_packet">Zgtask simple packet with min and max value</class>
 	<class name = "zgtask_net">Zgtask network object</class>
 	<class name = "zgtask_client">Zgtask client object</class>
 	<class name = "zgtask_redirector">Zgtask redirector object</class>

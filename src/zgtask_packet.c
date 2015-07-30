@@ -1,5 +1,5 @@
 /*  =========================================================================
-    zgtask_packet_simple - Zgtask packet simple with min and max value
+    zgtask_packet - Zgtask packet simple with min and max value
 
     Copyright (c) the Contributors as noted in the AUTHORS file.
     This file is part of CZMQ, the high-level C binding for 0MQ:
@@ -13,7 +13,7 @@
 
 /*
 @header
-    zgtask_packet_simple - Zgtask packet simple with min and max value
+    zgtask_packet - Zgtask packet simple with min and max value
 @discuss
 @end
 */
@@ -22,7 +22,7 @@
 
 //  Structure of our class
 
-struct _zgtask_packet_simple_t {
+struct _zgtask_packet_t {
     uint min;
     uint max;
     uint cur;
@@ -30,13 +30,13 @@ struct _zgtask_packet_simple_t {
 
 
 //  --------------------------------------------------------------------------
-//  Create a new zgtask_packet_simple.
+//  Create a new zgtask_packet.
 
-zgtask_packet_simple_t *
-zgtask_packet_simple_new ()
+zgtask_packet_t *
+zgtask_packet_new ()
 {
-    zgtask_packet_simple_t *self =
-        (zgtask_packet_simple_t *) zmalloc (sizeof (zgtask_packet_simple_t));
+    zgtask_packet_t *self =
+        (zgtask_packet_t *) zmalloc (sizeof (zgtask_packet_t));
     assert (self);
 
     self->min = 0;
@@ -47,14 +47,14 @@ zgtask_packet_simple_new ()
 }
 
 //  --------------------------------------------------------------------------
-//  Destroy the zgtask_packet_simple.
+//  Destroy the zgtask_packet.
 
 void
-zgtask_packet_simple_destroy (zgtask_packet_simple_t **self_p)
+zgtask_packet_destroy (zgtask_packet_t **self_p)
 {
     assert (self_p);
     if (*self_p) {
-        zgtask_packet_simple_t *self = *self_p;
+        zgtask_packet_t *self = *self_p;
 
         //  Free object itself
         free (self);
@@ -65,8 +65,8 @@ zgtask_packet_simple_destroy (zgtask_packet_simple_t **self_p)
 //  --------------------------------------------------------------------------
 //  Gets packet with packet size
 
-zgtask_packet_simple_t *
-zgtask_packet_simple_get_packet (zgtask_packet_simple_t *self, uint size)
+zgtask_packet_t *
+zgtask_packet_get_packet (zgtask_packet_t *self, uint size)
 {
     assert (self);
     if (self->max <= self->cur)
@@ -76,9 +76,9 @@ zgtask_packet_simple_get_packet (zgtask_packet_simple_t *self, uint size)
     if (max > self->max)
         max = self->max;
 
-    zgtask_packet_simple_t *packet = zgtask_packet_simple_new ();
-    zgtask_packet_simple_set_min (packet, self->cur);
-    zgtask_packet_simple_set_max (packet, max);
+    zgtask_packet_t *packet = zgtask_packet_new ();
+    zgtask_packet_set_min (packet, self->cur);
+    zgtask_packet_set_max (packet, max);
 
     self->cur = max+1;
 
@@ -89,7 +89,7 @@ zgtask_packet_simple_get_packet (zgtask_packet_simple_t *self, uint size)
 //  Set min value
 
 void
-zgtask_packet_simple_set_min (zgtask_packet_simple_t *self, uint min)
+zgtask_packet_set_min (zgtask_packet_t *self, uint min)
 {
     assert (self);
     self->cur = min;
@@ -100,7 +100,7 @@ zgtask_packet_simple_set_min (zgtask_packet_simple_t *self, uint min)
 //  --------------------------------------------------------------------------
 
 void
-zgtask_packet_simple_set_max (zgtask_packet_simple_t *self, uint max)
+zgtask_packet_set_max (zgtask_packet_t *self, uint max)
 {
     assert (self);
     self->max = max;
@@ -110,7 +110,7 @@ zgtask_packet_simple_set_max (zgtask_packet_simple_t *self, uint max)
 //  Inports packet to json
 
 void
-    zgtask_packet_simple_import_json (zgtask_packet_simple_t *self, json_t *json)
+    zgtask_packet_import_json (zgtask_packet_t *self, json_t *json)
 {
     assert (self);
     assert (json);
@@ -126,9 +126,9 @@ void
 
 
     js_tmp = json_object_get (js_task, "min");
-    zgtask_packet_simple_set_min (self,  json_integer_value (js_tmp));
+    zgtask_packet_set_min (self,  json_integer_value (js_tmp));
     js_tmp = json_object_get (js_task, "max");
-    zgtask_packet_simple_set_max (self,  json_integer_value (js_tmp));
+    zgtask_packet_set_max (self,  json_integer_value (js_tmp));
 
 }
 
@@ -136,7 +136,7 @@ void
 //  Exports packet to json
 
 void
-    zgtask_packet_simple_export_json (zgtask_packet_simple_t *self, json_t *json)
+    zgtask_packet_export_json (zgtask_packet_t *self, json_t *json)
 {
     assert (self);
     assert (json);
@@ -147,10 +147,10 @@ void
 
 
 //  --------------------------------------------------------------------------
-//  Print properties of the zgtask_packet_simple object.
+//  Print properties of the zgtask_packet object.
 
 void
-zgtask_packet_simple_print (zgtask_packet_simple_t *self)
+zgtask_packet_print (zgtask_packet_t *self)
 {
     assert (self);
     printf ("packet_simple min=%d max=%d\n", self->min, self->max);
@@ -161,15 +161,15 @@ zgtask_packet_simple_print (zgtask_packet_simple_t *self)
 //  Self test of this class.
 
 void
-zgtask_packet_simple_test (bool verbose)
+zgtask_packet_test (bool verbose)
 {
-    printf (" * zgtask_packet_simple: ");
+    printf (" * zgtask_packet: ");
 
     //  @selftest
     //  Simple create/destroy test
-    zgtask_packet_simple_t *self = zgtask_packet_simple_new ();
+    zgtask_packet_t *self = zgtask_packet_new ();
     assert (self);
-    zgtask_packet_simple_destroy (&self);
+    zgtask_packet_destroy (&self);
     //  @end
 
     printf ("OK\n");
