@@ -154,6 +154,42 @@ testJsonImport (int min, int max)
     return json_import;
 }
 
+zgtask_tree_t *
+testPacketSimple (int min, int max)
+{
+    zgtask_tree_t *root = zgtask_tree_new ("root", 0);
+    zhashx_t *data  = zgtask_tree_get_data (root);
+
+    zgtask_packet_simple_t *packet = zgtask_packet_simple_new ();
+    zgtask_packet_simple_set_min (packet, min);
+    zgtask_packet_simple_set_max (packet, max);
+    zhashx_insert (data, "packet", packet);
+
+    packet = (zgtask_packet_simple_t *) zgtask_tree_get_packet (root);
+    zgtask_packet_simple_print (packet);
+
+
+    int id = 0;
+
+    zgtask_packet_simple_t *p = zgtask_packet_simple_get_packet (packet, 1);
+    zgtask_packet_simple_print (p);
+
+    zgtask_tree_t *t_p = zgtask_tree_add_child (root, "%d", ++id);
+    data  = zgtask_tree_get_data (t_p);
+    zhashx_insert (data, "packet", p);
+
+    while (p) {
+        p = zgtask_packet_simple_get_packet (packet, 3);
+        if (!p)
+        	break;
+        zgtask_packet_simple_print (p);
+        t_p = zgtask_tree_add_brother (t_p, "%d", ++id);
+        data  = zgtask_tree_get_data (t_p);
+        zhashx_insert (data, "packet", p);
+    }
+
+    return root;
+}
 
 int
 main (int argc, char **argv)
@@ -180,6 +216,10 @@ main (int argc, char **argv)
     // Test jobs
     if (argc == 2 && streq (argv [1], "4"))
         t = testJsonImport (1, 10);
+
+    // Test Packet Simple
+    if (argc == 2 && streq (argv [1], "5"))
+        t = testPacketSimple (1, 10);
 
     if (t)
         zgtask_tree_destroy (&t);
