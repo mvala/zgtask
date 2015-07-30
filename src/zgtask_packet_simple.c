@@ -25,6 +25,7 @@
 struct _zgtask_packet_simple_t {
     uint min;
     uint max;
+    uint cur;
 };
 
 
@@ -40,6 +41,7 @@ zgtask_packet_simple_new ()
 
     self->min = 0;
     self->max = 0;
+    self->cur = 0;
 
     return self;
 }
@@ -61,12 +63,36 @@ zgtask_packet_simple_destroy (zgtask_packet_simple_t **self_p)
 }
 
 //  --------------------------------------------------------------------------
+//  Gets packet with packet size
+
+zgtask_packet_simple_t *
+zgtask_packet_simple_get_packet (zgtask_packet_simple_t *self, uint size)
+{
+    assert (self);
+    if (self->max <= self->cur)
+        return NULL;
+
+    uint max = self->cur + size - 1;
+    if (max > self->max)
+        max = self->max;
+
+    zgtask_packet_simple_t *packet = zgtask_packet_simple_new ();
+    zgtask_packet_simple_set_min (packet, self->cur);
+    zgtask_packet_simple_set_max (packet, max);
+
+    self->cur = max+1;
+
+    return packet;
+}
+
+//  --------------------------------------------------------------------------
 //  Set min value
 
 void
 zgtask_packet_simple_set_min (zgtask_packet_simple_t *self, uint min)
 {
     assert (self);
+    self->cur = min;
     self->min = min;
 }
 

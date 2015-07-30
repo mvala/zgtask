@@ -24,7 +24,7 @@
 
 struct _zgtask_tree_t {
     char *name;
-    zhashx_t *hash;
+    zhashx_t *data;
     zgtask_tree_t *parent;
     zgtask_tree_t *child;
     zgtask_tree_t *brother;
@@ -43,7 +43,7 @@ zgtask_tree_new (char *name, zgtask_tree_t *parent)
 
     // Initialize properties
     self->name = strdup (name);
-    self->hash = zhashx_new ();
+    self->data = zhashx_new ();
     self->parent = parent;
     self->child = 0;
     self->brother = 0;
@@ -71,18 +71,18 @@ zgtask_tree_destroy (zgtask_tree_t **self_p)
         zgtask_net_t *net = zgtask_tree_get_net (self);
         if (net) {
             zgtask_net_destroy (&net);
-            zhashx_delete (self->hash, "net");
+            zhashx_delete (self->data, "net");
         }
 
         // Cleaning task
         zgtask_task_t *task = zgtask_tree_get_task (self);
         if (task) {
             zgtask_task_destroy (&task);
-            zhashx_delete (self->hash, "task");
+            zhashx_delete (self->data, "task");
         }
 
-        //  Destroying hash table
-        zhashx_destroy (&self->hash);
+        //  Destroying data table
+        zhashx_destroy (&self->data);
 
         //  Free object itself
         free (self);
@@ -129,13 +129,33 @@ zgtask_tree_get_name (zgtask_tree_t *self)
 }
 
 //  --------------------------------------------------------------------------
+//  Returns data
+
+zhashx_t *
+zgtask_tree_get_data (zgtask_tree_t *self)
+{
+    assert (self);
+    return self->data;
+}
+
+//  --------------------------------------------------------------------------
 //  Returns net object
 
 zgtask_net_t *
 zgtask_tree_get_net (zgtask_tree_t *self)
 {
     assert (self);
-    return (zgtask_net_t *) zhashx_lookup (self->hash, "net");
+    return (zgtask_net_t *) zhashx_lookup (self->data, "net");
+}
+
+//  --------------------------------------------------------------------------
+//  Return task object
+
+void *
+zgtask_tree_get_packet (zgtask_tree_t *self)
+{
+    assert (self);
+    return (void *) zhashx_lookup (self->data, "packet");
 }
 
 //  --------------------------------------------------------------------------
@@ -145,7 +165,7 @@ zgtask_task_t *
 zgtask_tree_get_task (zgtask_tree_t *self)
 {
     assert (self);
-    return (zgtask_task_t *) zhashx_lookup (self->hash, "task");
+    return (zgtask_task_t *) zhashx_lookup (self->data, "task");
 }
 
 //  --------------------------------------------------------------------------
@@ -199,7 +219,7 @@ zgtask_tree_add_net (zgtask_tree_t *self, const char *format, ...)
     zgtask_net_t *net = zgtask_tree_get_net (self);
     if (!net) {
         net = zgtask_net_new (name);
-        zhashx_insert (self->hash, "net", net);
+        zhashx_insert (self->data, "net", net);
     }
     free (name);
 
@@ -226,7 +246,7 @@ zgtask_tree_add_task (zgtask_tree_t *self, const char *format, ...)
     zgtask_task_t *task = zgtask_tree_get_task (self);
     if (!task) {
         task = zgtask_task_new (name);
-        zhashx_insert (self->hash, "task", task);
+        zhashx_insert (self->data, "task", task);
     }
     free (name);
 

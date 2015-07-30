@@ -36,9 +36,17 @@ ZGTASK_EXPORT zgtask_tree_t *
 ZGTASK_EXPORT char *
     zgtask_tree_get_name (zgtask_tree_t *self);
 
+//  Returns data
+ZGTASK_EXPORT zhashx_t *
+    zgtask_tree_get_data (zgtask_tree_t *self);
+
 //  Returns net object
 ZGTASK_EXPORT zgtask_net_t *
     zgtask_tree_get_net (zgtask_tree_t *self);
+
+//  Returns packet object
+ZGTASK_EXPORT void *
+    zgtask_tree_get_packet (zgtask_tree_t *self);
 
 //  Returns task object
 ZGTASK_EXPORT zgtask_task_t *

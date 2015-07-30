@@ -28,6 +28,10 @@ ZGTASK_EXPORT zgtask_packet_simple_t *
 ZGTASK_EXPORT void
     zgtask_packet_simple_destroy (zgtask_packet_simple_t **self_p);
 
+//  Gets packet with packet size
+ZGTASK_EXPORT zgtask_packet_simple_t *
+    zgtask_packet_simple_get_packet (zgtask_packet_simple_t *self, uint size);
+
 //  Set min value
 ZGTASK_EXPORT void
     zgtask_packet_simple_set_min (zgtask_packet_simple_t *self, uint min);
