@@ -168,21 +168,19 @@ testPacketSimple (int min, int max)
     packet = (zgtask_packet_simple_t *) zgtask_tree_get_packet (root);
     zgtask_packet_simple_print (packet);
 
-
     int id = 0;
-
     zgtask_packet_simple_t *p = zgtask_packet_simple_get_packet (packet, 1);
-    zgtask_packet_simple_print (p);
+//    zgtask_packet_simple_print (p);
 
     zgtask_tree_t *t_p = zgtask_tree_add_child (root, "%d", ++id);
     data  = zgtask_tree_get_data (t_p);
     zhashx_insert (data, "packet", p);
-
+    char *json_str;
     while (p) {
         p = zgtask_packet_simple_get_packet (packet, 3);
         if (!p)
             break;
-        zgtask_packet_simple_print (p);
+//        zgtask_packet_simple_print (p);
         t_p = zgtask_tree_add_brother (t_p, "%d", ++id);
         data  = zgtask_tree_get_data (t_p);
         zhashx_insert (data, "packet", p);
@@ -190,7 +188,8 @@ testPacketSimple (int min, int max)
 
     zgtask_tree_print (t_p);
 
-    char *json_str = zgtask_tree_export_json (t_p, 0, 0);
+    //  Print last packet
+    json_str = zgtask_tree_export_json (t_p, 0, 0);
     printf ("%s\n", json_str);
 
     return root;

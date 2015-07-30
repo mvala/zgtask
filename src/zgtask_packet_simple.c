@@ -153,7 +153,7 @@ void
 zgtask_packet_simple_print (zgtask_packet_simple_t *self)
 {
     assert (self);
-    zsys_info ("packet_simple min=%ld max=%ld", self->min, self->max);
+    printf ("packet_simple min=%d max=%d\n", self->min, self->max);
 }
 
 
